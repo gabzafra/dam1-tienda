@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.Scanner;
 
-
 public class Calculadora {
 
     public static void main(String[] args) {
@@ -15,12 +14,6 @@ public class Calculadora {
         Menu menuActual = Menu.MENU_PRINCIPAL;
         SeleccionMenu opcionSeleccionada = new SeleccionMenu("", false);
         boolean haTerminado = false;
-
-//      Variables para las entradas del usuario
-        String entradaLimpia;
-        Operando primerOperando = new Operando(0, true);
-        Operando segundoOperando = new Operando(0, true);
-        boolean esEntradaValida = false;
 
 //      Variable para el resultado de la operacion
         String resultado = "";
@@ -39,8 +32,7 @@ public class Calculadora {
                 //Pintamos el menu actual
                 pintarMenu(menuActual.getListaOpciones(), opcionSeleccionada.hayError);
                 //Seleccionamos una opcion valida del menu actual
-                entradaLimpia = input.nextLine().trim().toUpperCase();
-                opcionSeleccionada = esSeleccionValida(menuActual.getListaOpciones(), entradaLimpia);
+                opcionSeleccionada = esSeleccionValida(menuActual.getListaOpciones(), input.nextLine().trim().toUpperCase());
 
                 if (!opcionSeleccionada.hayError) {
                     //Segun la opcion seleccionada hacemos la operacion que toque
@@ -58,7 +50,7 @@ public class Calculadora {
                         case MENU_BASICO -> {
                             switch (opcionSeleccionada.opcion) {
                                 //SUMA
-                                case "1" -> resultado = resolverOperacion(input, Operacion.SUMA );
+                                case "1" -> resultado = resolverOperacion(input, Operacion.SUMA);
                                 //RESTA
                                 case "2" -> resultado = resolverOperacion(input, Operacion.RESTA);
                                 //PRODUCTO
@@ -74,23 +66,23 @@ public class Calculadora {
                         case MENU_AVANZADO -> {
                             switch (opcionSeleccionada.opcion) {
                                 //VALOR ABSOLUTO
-                                case "1" -> resultado = resolverOperacion(input, Operacion.VALOR_ABSOLUTO );
+                                case "1" -> resultado = resolverOperacion(input, Operacion.VALOR_ABSOLUTO);
                                 //RAIZ CUADRADA
-                                case "2" -> resultado = resolverOperacion(input, Operacion.RAIZ_CUADRADA );
+                                case "2" -> resultado = resolverOperacion(input, Operacion.RAIZ_CUADRADA);
                                 //RAIZ CUBICA
-                                case "3" -> resultado = resolverOperacion(input, Operacion.RAIZ_CUBICA );
+                                case "3" -> resultado = resolverOperacion(input, Operacion.RAIZ_CUBICA);
                                 //POTENCIA
-                                case "4" -> resultado = resolverOperacion(input, Operacion.POTENCIA );
+                                case "4" -> resultado = resolverOperacion(input, Operacion.POTENCIA);
                                 //POTENCIA DE e
-                                case "5" -> resultado = resolverOperacion(input, Operacion.POTENCIA_E );
+                                case "5" -> resultado = resolverOperacion(input, Operacion.POTENCIA_E);
                                 //LOGARITMO BASE 10
-                                case "6" -> resultado = resolverOperacion(input, Operacion.LOG10 );
+                                case "6" -> resultado = resolverOperacion(input, Operacion.LOG10);
                                 //LOGARITMO NEPERIANO
-                                case "7" -> resultado = resolverOperacion(input, Operacion.LN );
+                                case "7" -> resultado = resolverOperacion(input, Operacion.LN);
                                 //INVERSO
-                                case "8" -> resultado = resolverOperacion(input, Operacion.INVERSA );
+                                case "8" -> resultado = resolverOperacion(input, Operacion.INVERSA);
                                 //FACTORIAL
-                                case "9" -> resultado = resolverOperacion(input, Operacion.FACTORIAL );
+                                case "9" -> resultado = resolverOperacion(input, Operacion.FACTORIAL);
                                 default -> {
                                 }// No se ejecutara dado que las opciones ya estan validadas
                             }
@@ -98,11 +90,11 @@ public class Calculadora {
                         case MENU_TRIGONO -> {
                             switch (opcionSeleccionada.opcion) {
                                 //SENO
-                                case "1" -> resultado = resolverOperacion(input, Operacion.SENO );
+                                case "1" -> resultado = resolverOperacion(input, Operacion.SENO);
                                 //COSENO
-                                case "2" -> resultado = resolverOperacion(input, Operacion.COSENO );
+                                case "2" -> resultado = resolverOperacion(input, Operacion.COSENO);
                                 //TANGENTE
-                                case "3" -> resultado = resolverOperacion(input, Operacion.TANGENTE );
+                                case "3" -> resultado = resolverOperacion(input, Operacion.TANGENTE);
                                 default -> {
                                 }// No se ejecutara dado que las opciones ya estan validadas
                             }
@@ -114,7 +106,7 @@ public class Calculadora {
                 //Si tenemos un resultado se pinta por pantalla
                 if (resultado.length() > 0) {
                     pintarResultado(resultado);
-                    //Movernos al menu de salida y reiniciar estados
+                    //Nos movemos al menu de salida y reiniciar estados
                     menuActual = Menu.MENU_FINAL;
                     resultado = "";
                     opcionSeleccionada.opcion = "";
@@ -141,7 +133,8 @@ public class Calculadora {
     static void pintarMenu(String[][] contenido, boolean error) {
         System.out.println(contenido[0][0]);
         System.out.println("--------------");
-        if (error) System.out.println("*** ATENCION El valor introducido no es una opcion del menu ***");
+        if (error)
+            System.out.println(ANSI_RED + "*** ATENCION El valor introducido no es una opcion del menu ***" + ANSI_RESET);
         System.out.println(contenido[0][1]);
         System.out.println("--------------");
         for (int i = 1; i < contenido.length; i++) {
@@ -161,7 +154,7 @@ public class Calculadora {
      */
     static void pintarResultado(String resultado) {
         System.out.println("--------------");
-        System.out.println("El resultado de su operacion es: " + (new BigDecimal(resultado).round(new MathContext(5))));
+        System.out.println(ANSI_GREEN + "El resultado de su operacion es: " + (new BigDecimal(resultado).round(new MathContext(5))) + ANSI_RESET);
         System.out.println("--------------");
     }
 
@@ -268,39 +261,39 @@ public class Calculadora {
      */
     static Operando validarOperando(String entradaUsuario, String tipoValidacion) {
         String entradaUsuarioSan = entradaUsuario.trim();
-        double numero;
+        double numeroQueValidar;
 //      Validacion para entero >= 0
-        if (tipoValidacion.equals("!n") && esUnEntero(entradaUsuario)) {
-            numero = Double.parseDouble(entradaUsuarioSan);
+        if (tipoValidacion.equals("!n") && esUnEntero(entradaUsuarioSan)) {
+            numeroQueValidar = Double.parseDouble(entradaUsuarioSan);
             //el factorial mas grande que cabe en un long es !20
-            if (numero >= 0 && numero <= 20) {
-                return (new Operando(numero, true));
+            if (numeroQueValidar >= 0 && numeroQueValidar <= 20) {
+                return (new Operando(numeroQueValidar, true));
             } else {
-                return (new Operando(numero, false));
+                return (new Operando(numeroQueValidar, false));
             }
 //      Validacion para valores Double
         } else if (esUnDouble(entradaUsuarioSan)) {
             switch (tipoValidacion) {
                 case ">0":
-                    numero = Double.parseDouble(entradaUsuarioSan);
-                    if (numero > 0) {
-                        return (new Operando(numero, true));
+                    numeroQueValidar = Double.parseDouble(entradaUsuarioSan);
+                    if (numeroQueValidar > 0) {
+                        return (new Operando(numeroQueValidar, true));
                     } else {
-                        return (new Operando(numero, false));
+                        return (new Operando(numeroQueValidar, false));
                     }
                 case "!0":
-                    numero = Double.parseDouble(entradaUsuarioSan);
-                    if (numero != 0) {
-                        return (new Operando(numero, true));
+                    numeroQueValidar = Double.parseDouble(entradaUsuarioSan);
+                    if (numeroQueValidar != 0) {
+                        return (new Operando(numeroQueValidar, true));
                     } else {
-                        return (new Operando(numero, false));
+                        return (new Operando(numeroQueValidar, false));
                     }
                 case ">=0":
-                    numero = Double.parseDouble(entradaUsuarioSan);
-                    if (numero >= 0) {
-                        return (new Operando(numero, true));
+                    numeroQueValidar = Double.parseDouble(entradaUsuarioSan);
+                    if (numeroQueValidar >= 0) {
+                        return (new Operando(numeroQueValidar, true));
                     } else {
-                        return (new Operando(numero, false));
+                        return (new Operando(numeroQueValidar, false));
                     }
                 default:
                     return (new Operando(Double.parseDouble(entradaUsuarioSan), true));
@@ -311,31 +304,64 @@ public class Calculadora {
         }
     }
 
-    //TODO completar metodo de resolucion con el nuevo enum
+    /**
+     * Pide al usuario los operandos necesarios para realizar una operación dada y
+     * devuelve el resultado de esta operacion
+     *
+     * @param input     Objeto scanner para la entrada del usuario
+     * @param operacion Objeto con la operacion que se desea realizar
+     * @return resutado de la operacion
+     */
     static String resolverOperacion(Scanner input, Operacion operacion) {
-        boolean esEntradaValida = false;
-        Operando primerOperando = null, segundoOperando = null;
         String resultado = "";
-        if(operacion.esUnaria()){
-            //TODO operaciones unarias
-        }else {
-            while (!esEntradaValida) {
-                primerOperando = pedirOperando(input, "Por favor introduzca el primer operando",
+        Operando primerOperando = new Operando(0, false);
+        //Si la operaciones es de un operando
+        if (operacion.esUnaria()) {
+            //Controlamos la entrada
+            while (!primerOperando.esValido) {
+                primerOperando = pedirOperando(input, "Por favor introduzca el operando",
                         operacion.getSlugDeValidacion(), operacion.getMensajeError());
-                esEntradaValida = primerOperando.esValido;
             }
-            esEntradaValida = false;
-            while (!esEntradaValida) {
+            //Realizamos la operacion
+            switch (operacion) {
+                case VALOR_ABSOLUTO -> resultado = String.valueOf(Math.abs(primerOperando.operando));
+                case RAIZ_CUADRADA -> resultado = String.valueOf(Math.sqrt(primerOperando.operando));
+                case RAIZ_CUBICA -> resultado = String.valueOf(Math.cbrt(primerOperando.operando));
+                case POTENCIA_E -> resultado = String.valueOf(Math.exp(primerOperando.operando));
+                case LOG10 -> resultado = String.valueOf(Math.log10(primerOperando.operando));
+                case LN -> resultado = String.valueOf(Math.log(primerOperando.operando));
+                case INVERSA -> resultado = String.valueOf(1 / primerOperando.operando);
+                case FACTORIAL -> resultado = String.valueOf(factorial((long) primerOperando.operando));
+                case SENO -> resultado = String.valueOf(Math.sin(primerOperando.operando));
+                case COSENO -> resultado = String.valueOf(Math.cos(primerOperando.operando));
+                case TANGENTE -> resultado = String.valueOf(Math.tan(primerOperando.operando));
+                default -> {
+                }
+            }
+            //Si la operacion es de dos operandos
+        } else {
+            Operando segundoOperando = new Operando(0, false);
+            //Controlamos las entradas
+            while (!primerOperando.esValido) {
+                //Para este primer operando nos se realizan comprobaciones adicionales a ser del tipo correcto
+                primerOperando = pedirOperando(input, "Por favor introduzca el primer operando",
+                        "", operacion.getMensajeError());
+            }
+            while (!segundoOperando.esValido) {
                 segundoOperando = pedirOperando(input, "Por favor introduzca el segundo operando",
                         operacion.getSlugDeValidacion(), operacion.getMensajeError());
-                esEntradaValida = segundoOperando.esValido;
             }
-            switch (operacion){
+            //Realizamos la operacion
+            switch (operacion) {
                 case SUMA -> resultado = String.valueOf(primerOperando.operando + segundoOperando.operando);
                 case RESTA -> resultado = String.valueOf(primerOperando.operando - segundoOperando.operando);
                 case PRODUCTO -> resultado = String.valueOf(primerOperando.operando * segundoOperando.operando);
                 case DIVISION -> resultado = String.valueOf(primerOperando.operando / segundoOperando.operando);
                 case MODULO -> resultado = String.valueOf(primerOperando.operando % segundoOperando.operando);
+                case POTENCIA -> resultado = String.valueOf(Math.pow(primerOperando.operando,
+                        segundoOperando.operando));
+                default -> {
+                }
             }
         }
         return resultado;
@@ -411,22 +437,23 @@ public class Calculadora {
         }
     }
 
-    //TODO completar las operaciones
+    //Valores que describen las operaciones posibles. Atendiendo al numero de operandos, la verificacion de la
+    // entrada de datos y el posible mensaje de error al usuario
     enum Operacion {
         SUMA(false, "Debe introducir un numero", ""),
         RESTA(false, "Debe introducir un numero", ""),
         PRODUCTO(false, "Debe introducir un numero", ""),
-        DIVISION(false, "Debe introducir un numero", "!0"),
-        MODULO(false, "Debe introducir un numero", "!0"),
+        DIVISION(false, "Debe introducir un numero, recuerde que el divisor no puede ser 0", "!0"),
+        MODULO(false, "Debe introducir un numero, recuerde que el divisor debe ser mayor que 0", "!0"),
         POTENCIA(false, "Debe introducir un numero", ""),
         VALOR_ABSOLUTO(true, "Debe introducir un numero", ""),
-        RAIZ_CUADRADA(true, "Debe introducir un numero", ">=0"),
+        RAIZ_CUADRADA(true, "Debe introducir un numero mayor o igual que 0", ">=0"),
         RAIZ_CUBICA(true, "Debe introducir un numero", ""),
         POTENCIA_E(true, "Debe introducir un numero", ""),
-        LOG10(true, "Debe introducir un numero", ">0"),
-        LN(true, "Debe introducir un numero", ">0"),
-        INVERSA(true, "Debe introducir un numero", "!0"),
-        FACTORIAL(true, "Debe introducir un numero", "!n"),
+        LOG10(true, "Debe introducir un numero mayor que 0", ">0"),
+        LN(true, "Debe introducir un numero mayor que 0", ">0"),
+        INVERSA(true, "Debe introducir un numero, recuerde que el divisor no puede ser 0", "!0"),
+        FACTORIAL(true, "Debe introducir un numero entre 0 y 20", "!n"),
         SENO(true, "Debe introducir un numero", ""),
         COSENO(true, "Debe introducir un numero", ""),
         TANGENTE(true, "Debe introducir un numero", "");
@@ -441,8 +468,6 @@ public class Calculadora {
             this.slugDeValidacion = slugDeValidacion;
         }
 
-
-        //TODO mirar si esto hace falta de verdad
         public String getMensajeError() {
             return mensajeError;
         }
@@ -457,7 +482,7 @@ public class Calculadora {
 
     }
 
-    //Almacena operandos y si son validos o no
+    //Almacena un operando y si esta validado o no
     static class Operando {
         double operando;
         boolean esValido;
@@ -479,4 +504,9 @@ public class Calculadora {
             this.hayError = hayError;
         }
     }
+
+    //Colores para los mensajes al usuario
+    static final String ANSI_RESET = "\u001B[0m";
+    static final String ANSI_RED = "\u001B[31m";
+    static final String ANSI_GREEN = "\u001B[32m";
 }

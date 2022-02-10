@@ -2,6 +2,7 @@ package es.everis.programacion.act35;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.Scanner;
 
 public class Calculadora {
@@ -154,7 +155,9 @@ public class Calculadora {
      */
     static void pintarResultado(String resultado) {
         System.out.println("--------------");
-        System.out.println(ANSI_GREEN + "El resultado de su operacion es: " + (new BigDecimal(resultado).round(new MathContext(5))) + ANSI_RESET);
+        System.out.println(resultado);
+        System.out.println(ANSI_GREEN + "El resultado de su operacion es: " + (new BigDecimal(resultado,
+                MathContext.DECIMAL64)).setScale(4, RoundingMode.HALF_UP)+ ANSI_RESET);
         System.out.println("--------------");
     }
 

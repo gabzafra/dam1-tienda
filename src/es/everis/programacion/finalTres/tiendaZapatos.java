@@ -14,13 +14,11 @@ public class tiendaZapatos {
         while (!haTerminado) {
             System.out.println("Por favor elija el tipo de zapato a añadir a la cesta:");
             if (sandalias.length() > 0 || deportivo.length() > 0 || vestir.length() > 0) {
-                System.out.println("-----------------------------------------------------------------");
-                System.out.println("| MODELO                                   UNIDADES   PRECIO    |");
-                System.out.println("-----------------------------------------------------------------");
+                pintarCabecera();
                 pintarBloquePedido(sandalias);
                 pintarBloquePedido(deportivo);
                 pintarBloquePedido(vestir);
-                System.out.println("-----------------------------------------------------------------");
+                System.out.println("+--------------------------------------------------------------------------+");
             }
             System.out.println("1. Sandalia");
             System.out.println("2. Zapato deportivo");
@@ -49,28 +47,26 @@ public class tiendaZapatos {
         if (entrada.equalsIgnoreCase("S")) hayDescuento = true;
 
 
-//      pintar ticket
-        System.out.println("-----------------------------------------------------------------");
-        System.out.println("| MODELO                                   UNIDADES   PRECIO    |");
-        System.out.println("-----------------------------------------------------------------");
+//      pintar factura
+        pintarCabecera();
         pintarBloquePedido(sandalias);
         pintarBloquePedido(deportivo);
         pintarBloquePedido(vestir);
-        System.out.println("-----------------------------------------------------------------");
-        System.out.println("|                                                    SUBTOTAL   |");
+        System.out.println("+-----------------------------------------------------+--------------------+");
+        System.out.println("|                                          SUBTOTAL   |");
         precioFinal = calcularPrecioTotal(sandalias) + calcularPrecioTotal(deportivo) + calcularPrecioTotal(vestir);
-        System.out.printf("|%60.2f   |\n", precioFinal);
+        System.out.printf("|%50.2f   |\n", precioFinal);
         if (hayDescuento) {
             precioFinal -= precioFinal * 8 / 100;
-            System.out.println("|                                       CON DESCUENTO CLIENTE   |");
-            System.out.printf("|%60.2f   |\n", precioFinal);
+            System.out.println("|                        DESCUENTO CLIENTE HABITUAL   |");
+            System.out.printf("|%50.2f   |\n", precioFinal);
         }
-        System.out.println("|                                                    IVA(21%)   |");
-        System.out.printf("|%60.2f   |\n", precioFinal * 0.21);
-        System.out.println("|                                                       TOTAL   |");
+        System.out.println("|                                          IVA(21%)   |");
+        System.out.printf("|%50.2f   |\n", precioFinal * 0.21);
+        System.out.println("|                                             TOTAL   |");
         precioFinal += precioFinal * 0.21;
-        System.out.printf("|%60.2f   |\n", precioFinal);
-        System.out.println("-----------------------------------------------------------------");
+        System.out.printf("|%50.2f   |\n", precioFinal);
+        System.out.println("+-----------------------------------------------------+");
         System.out.println("Totales de paqueteria");
         System.out.println("Sandalias: " + calcularUnidadesTotales(sandalias));
         System.out.println("Zapato deportivo: " + calcularUnidadesTotales(deportivo));
@@ -119,6 +115,12 @@ public class tiendaZapatos {
 
     }
 
+    static void pintarCabecera(){
+        System.out.println("+--------------------------------------------------------------------------+");
+        System.out.println("| MODELO                                   UNIDADES   PRECIO     TOTAL     |");
+        System.out.println("+--------------------------------------------------------------------------+");
+    }
+
     static void pintarBloquePedido(String listaProductos) {
         String listaZapatos = listaProductos;
         String unidades, modelo;
@@ -130,7 +132,8 @@ public class tiendaZapatos {
             listaZapatos = listaZapatos.substring(listaZapatos.indexOf("|") + 1);
             unidades = listaZapatos.substring(0, listaZapatos.indexOf("|"));
             listaZapatos = listaZapatos.substring(listaZapatos.indexOf("|") + 1);
-            System.out.printf("| %-40s %-10s %-10.2f|\n", modelo, unidades, precio);
+            System.out.printf("| %-40s %-10s %-10.2f %-10.2f|\n", modelo, unidades, precio,
+                    (Integer.parseInt(unidades) * precio));
         }
     }
 

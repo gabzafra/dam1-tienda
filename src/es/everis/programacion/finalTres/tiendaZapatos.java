@@ -4,15 +4,17 @@ import java.util.Scanner;
 
 public class tiendaZapatos {
     public static void main(String[] args) {
-        String sandalias = "", deportivo = "", vestir = "", entrada = "";
+        String sandalias = "", deportivo = "", vestir = "", entrada = "", nombreCliente;
         boolean haTerminado = false, hayDescuento = false;
         int opcionSeleccionada;
-        double precioFinal;
+
         Scanner input = new Scanner(System.in);
 //        pintar mensaje intro
         System.out.println("Bienvenido a su TPV");
+        System.out.println("Por favor introduzca el nombre del cliente:");
+        nombreCliente = input.nextLine();
         while (!haTerminado) {
-            System.out.println("Por favor elija el tipo de zapato a añadir a la cesta:");
+            System.out.println("Por favor elija el tipo de zapato a a\u0148adir a la cesta:");
             if (sandalias.length() > 0 || deportivo.length() > 0 || vestir.length() > 0) {
                 pintarCabecera();
                 pintarBloquePedido(sandalias);
@@ -48,29 +50,7 @@ public class tiendaZapatos {
 
 
 //      pintar factura
-        pintarCabecera();
-        pintarBloquePedido(sandalias);
-        pintarBloquePedido(deportivo);
-        pintarBloquePedido(vestir);
-        System.out.println("+-----------------------------------------------------+--------------------+");
-        System.out.println("|                                          SUBTOTAL   |");
-        precioFinal = calcularPrecioTotal(sandalias) + calcularPrecioTotal(deportivo) + calcularPrecioTotal(vestir);
-        System.out.printf("|%50.2f   |\n", precioFinal);
-        if (hayDescuento) {
-            precioFinal -= precioFinal * 8 / 100;
-            System.out.println("|                        DESCUENTO CLIENTE HABITUAL   |");
-            System.out.printf("|%50.2f   |\n", precioFinal);
-        }
-        System.out.println("|                                          IVA(21%)   |");
-        System.out.printf("|%50.2f   |\n", precioFinal * 0.21);
-        System.out.println("|                                             TOTAL   |");
-        precioFinal += precioFinal * 0.21;
-        System.out.printf("|%50.2f   |\n", precioFinal);
-        System.out.println("+-----------------------------------------------------+");
-        System.out.println("Totales de paqueteria");
-        System.out.println("Sandalias: " + calcularUnidadesTotales(sandalias));
-        System.out.println("Zapato deportivo: " + calcularUnidadesTotales(deportivo));
-        System.out.println("Zapato de vestir: " + calcularUnidadesTotales(vestir));
+        pintarFactura(nombreCliente, sandalias, deportivo, vestir, hayDescuento);
     }
 
     static String addProduct(String productos, String slug) {
@@ -115,9 +95,9 @@ public class tiendaZapatos {
 
     }
 
-    static void pintarCabecera(){
+    static void pintarCabecera() {
         System.out.println("+--------------------------------------------------------------------------+");
-        System.out.println("| MODELO                                   UNIDADES   PRECIO     TOTAL     |");
+        System.out.println("| MODELO                                  UNIDADES       PRECIO     TOTAL  |");
         System.out.println("+--------------------------------------------------------------------------+");
     }
 
@@ -132,9 +112,45 @@ public class tiendaZapatos {
             listaZapatos = listaZapatos.substring(listaZapatos.indexOf("|") + 1);
             unidades = listaZapatos.substring(0, listaZapatos.indexOf("|"));
             listaZapatos = listaZapatos.substring(listaZapatos.indexOf("|") + 1);
-            System.out.printf("| %-40s %-10s %-10.2f %-10.2f|\n", modelo, unidades, precio,
+            System.out.printf("| %-40s%-10s%10.2f\u20ac %10.2f\u20ac|\n", modelo, unidades, precio,
                     (Integer.parseInt(unidades) * precio));
         }
+    }
+
+    static void pintarFactura(String nombreCliente, String sandalias, String deportivo, String vestir, boolean hayDescuento) {
+
+        double precioFinal = calcularPrecioTotal(sandalias) + calcularPrecioTotal(deportivo) + calcularPrecioTotal(vestir);
+
+        pintarCabecera();
+        pintarBloquePedido(sandalias);
+        pintarBloquePedido(deportivo);
+        pintarBloquePedido(vestir);
+        System.out.println("+-----------------------------------------------------+--------------------+");
+        System.out.println("|                                           SUBTOTAL  |");
+        System.out.printf("|%50.2f\u20ac  |\n", precioFinal);
+
+        if (hayDescuento) {
+            System.out.println("|                     DESCUENTO CLIENTE HABITUAL(8%)  |");
+            System.out.printf("|%50.2f\u20ac  |\n", precioFinal * 0.08);
+
+            precioFinal -= precioFinal * 8 / 100;
+            System.out.println("|                               PRECIO CON DESCUENTO  |");
+            System.out.printf("|%50.2f\u20ac  |\n", precioFinal);
+        }
+
+        System.out.println("|                                           IVA(21%)  |");
+        System.out.printf("|%50.2f\u20ac  |\n", precioFinal * 0.21);
+        System.out.println("|                                              TOTAL  |");
+
+        precioFinal += precioFinal * 0.21;
+
+        System.out.printf("|%50.2f\u20ac  |\n", precioFinal);
+        System.out.println("+-----------------------------------------------------+");
+        System.out.println("Receptor del pedido: " + nombreCliente);
+        System.out.println("Totales de paqueteria");
+        System.out.println("Sandalias: " + calcularUnidadesTotales(sandalias));
+        System.out.println("Zapato deportivo: " + calcularUnidadesTotales(deportivo));
+        System.out.println("Zapato de vestir: " + calcularUnidadesTotales(vestir));
     }
 
     static double incluirMargen(double precio) {

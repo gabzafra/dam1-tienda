@@ -5,10 +5,10 @@ public class User {
   private final int ID;
   private String fullName;
   private boolean discount;
-  private Order[] orderHistory;
+  private int[] orderHistory;
 
   public User(int ID, String fullName, boolean discount,
-      Order[] orderHistory) {
+      int[] orderHistory) {
     this.ID = ID;
     this.fullName = fullName;
     this.discount = discount;
@@ -35,11 +35,11 @@ public class User {
     this.discount = discount;
   }
 
-  public Order[] getOrderHistory() {
+  public int[] getOrderHistory() {
     return orderHistory;
   }
 
-  public void setOrderHistory(Order[] orderHistory) {
+  public void setOrderHistory(int[] orderHistory) {
     this.orderHistory = orderHistory;
   }
 }

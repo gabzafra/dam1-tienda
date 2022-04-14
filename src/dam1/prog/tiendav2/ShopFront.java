@@ -10,6 +10,16 @@ public class ShopFront {
 
   public static void main(String[] args) {
     Scanner input = new Scanner(System.in);
-
+    Menu currentMenu = Menu.MENU_1;
+    int selectedOption;
+    do {
+      System.out.println(currentMenu.getTitle());
+      for (MenuItem option: currentMenu.getOptionList()
+      ) {
+        System.out.println(option.getOptionNumber() + ". " + option.getOptionLabel());
+      }
+      System.out.println("Por favor elija una opción");
+      selectedOption = input.nextInt();
+    }while (selectedOption != 0);
   }
 }

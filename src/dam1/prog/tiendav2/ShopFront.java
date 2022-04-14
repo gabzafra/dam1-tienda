@@ -15,10 +15,26 @@ public class ShopFront {
     int selectedOption;
     do {
       selectedOption = getOptionFromUser(input, currentMenu);
+      switch (currentMenu) {
+        case MENU_1 -> {
+          switch (selectedOption) {
+            case 1 -> currentMenu = Menu.MENU_2;
+            default -> {
+            }
+          }
+        }
+        case MENU_2 -> {
+          switch (selectedOption) {
+            case 1 -> currentMenu = Menu.MENU_1;
+            default -> {
+            }
+          }
+        }
+      }
     } while (selectedOption != 0);
   }
 
-  private static void pintarMenu(Menu menu){
+  private static void pintarMenu(Menu menu) {
     System.out.println(menu.getTitle());
     System.out.println("---------------------------------------");
     for (MenuItem option : menu.getOptionList()

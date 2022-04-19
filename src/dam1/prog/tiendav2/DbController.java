@@ -56,7 +56,7 @@ public class DbController {
   }
 
   public boolean decreaseModelUnits() {
-
+    return true;
   }
 
 }

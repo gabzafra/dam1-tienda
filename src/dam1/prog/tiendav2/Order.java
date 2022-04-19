@@ -14,6 +14,13 @@ public class Order {
     this.productList = new Shoe[0];
   }
 
+  public Order(int ID, int ownerID, String status, Shoe[] productList) {
+    this.ID = ID;
+    this.ownerID = ownerID;
+    this.status = status;
+    this.productList = productList;
+  }
+
   public int getID() {
     return ID;
   }

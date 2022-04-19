@@ -1,16 +1,19 @@
 package dam1.prog.tiendav2;
 
-public class Shoe {
+public class ShoeModel {
+
   private final int ID;
   private String description;
   private String style;
   private double price;
+  private int availableUnits;
 
-  public Shoe(int ID, String description, String style, double price) {
+  public ShoeModel(int ID, String description, String style, double price) {
     this.ID = ID;
     this.description = description;
     this.style = style;
     this.price = price;
+    this.availableUnits = 0;
   }
 
   public int getID() {
@@ -39,5 +42,13 @@ public class Shoe {
 
   public void setPrice(double price) {
     this.price = price;
+  }
+
+  public int getAvailableUnits() {
+    return availableUnits;
+  }
+
+  public void setAvailableUnits(int availableUnits) {
+    this.availableUnits = availableUnits;
   }
 }

@@ -2,7 +2,7 @@ package es.everis.programacion.finalTres;
 
 import java.util.Scanner;
 
-public class tiendaZapatos {
+public class Zapateria {
 
   public static void main(String[] args) {
     String sandalias = "", deportivo = "", vestir = "", entrada = "", nombreCliente;

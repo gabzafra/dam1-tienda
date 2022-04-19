@@ -12,30 +12,31 @@ public class ShopFront {
   public static void main(String[] args) {
     Scanner input = new Scanner(System.in);
     Menu currentMenu = Menu.MENU_1;
-    int selectedOption;
+    String selectedOption;
     do {
       selectedOption = getOptionFromUser(input, currentMenu);
       switch (currentMenu) {
         case MENU_1 -> {
           switch (selectedOption) {
-            case 1 -> currentMenu = Menu.MENU_2;
+            case "1" -> currentMenu = Menu.MENU_2;
             default -> {
             }
           }
         }
         case MENU_2 -> {
           switch (selectedOption) {
-            case 1 -> currentMenu = Menu.MENU_1;
+            case "1" -> currentMenu = Menu.MENU_1;
             default -> {
             }
           }
         }
       }
-    } while (selectedOption != 0);
+    } while (!selectedOption.equalsIgnoreCase("0"));
   }
 
   /**
    * Pinta por consola el menu dado como argumento
+   *
    * @param menu que se quiere pintar por consola
    */
   private static void pintarMenu(Menu menu) {
@@ -49,31 +50,26 @@ public class ShopFront {
   }
 
   /**
-   * Devuelve el número de la opción del menu seleccionada por el usuario
+   * Pide al usuario que elija una opción del menu y devuelve la opción
+   * seleccionada en mayúsculas
+   *
    * @param consoleInput entrada del usuario
-   * @param menu menu donde esta el usuario
-   * @return número de opción seleccionada
+   * @param menu         menu donde esta el usuario
+   * @return opción seleccionada en mayusculas
    */
-  private static int getOptionFromUser(Scanner consoleInput, Menu menu) {
-    int userInput = -1;
-    boolean isAnInt;
-    while (true) {
+  private static String getOptionFromUser(Scanner consoleInput, Menu menu) {
+    String userInput;
+    do {
       pintarMenu(menu);
-      isAnInt = true;
       System.out.println("Por favor elija una opción del menú:");
-      try {
-        userInput = Integer.parseInt(consoleInput.nextLine());
-      } catch (NumberFormatException e) {
-        isAnInt = false;
-        System.out.println(COLOR_RED + "Debe escribir un número!" + COLOR_WHITE);
-      }
-      if (isAnInt) {
-        for (MenuItem opcion : menu.getOptionList()) {
-          if (opcion.getOptionNumber() == userInput) {
-            return userInput;
-          }
+      userInput = consoleInput.nextLine().trim();
+      for (MenuItem opcion : menu.getOptionList()) {
+        if (opcion.getOptionNumber().equalsIgnoreCase(userInput)) {
+          return userInput.toUpperCase();
         }
       }
-    }
+      System.out.println(COLOR_RED + "La opción seleccionada no es válida" + COLOR_WHITE);
+    } while (true);
+
   }
 }

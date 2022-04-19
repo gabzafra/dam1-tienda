@@ -1,8 +1,8 @@
 package dam1.prog.tiendav2;
 
-public record MenuItem(int optionNumber, String optionLabel) {
+public record MenuItem(String optionNumber, String optionLabel) {
 
-  public int getOptionNumber() {
+  public String getOptionNumber() {
     return optionNumber;
   }
 

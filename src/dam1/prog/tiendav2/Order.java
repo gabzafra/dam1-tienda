@@ -1,14 +1,17 @@
 package dam1.prog.tiendav2;
 
 public class Order {
+
   private final int ID;
   private int ownerID;
   private String status;
+  private Shoe[] productList;
 
   public Order(int ID, int ownerID, String status) {
     this.ID = ID;
     this.ownerID = ownerID;
     this.status = status;
+    this.productList = new Shoe[0];
   }
 
   public int getID() {
@@ -29,6 +32,14 @@ public class Order {
 
   public void setStatus(String status) {
     this.status = status;
+  }
+
+  public Shoe[] getProductList() {
+    return productList;
+  }
+
+  public void setProductList(Shoe[] productList) {
+    this.productList = productList;
   }
 }
 

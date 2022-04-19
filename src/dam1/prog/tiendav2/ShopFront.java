@@ -34,6 +34,10 @@ public class ShopFront {
     } while (selectedOption != 0);
   }
 
+  /**
+   * Pinta por consola el menu dado como argumento
+   * @param menu que se quiere pintar por consola
+   */
   private static void pintarMenu(Menu menu) {
     System.out.println(menu.getTitle());
     System.out.println("---------------------------------------");
@@ -44,6 +48,12 @@ public class ShopFront {
     System.out.println("---------------------------------------");
   }
 
+  /**
+   * Devuelve el número de la opción del menu seleccionada por el usuario
+   * @param consoleInput entrada del usuario
+   * @param menu menu donde esta el usuario
+   * @return número de opción seleccionada
+   */
   private static int getOptionFromUser(Scanner consoleInput, Menu menu) {
     int userInput = -1;
     boolean isAnInt;

@@ -1,12 +1,12 @@
 package dam1.prog.tiendav2;
 
-public class User {
+public class Client {
 
   private final int ID;
   private String fullName;
   private boolean discount;
 
-  public User(int ID, String fullName, boolean discount) {
+  public Client(int ID, String fullName, boolean discount) {
     this.ID = ID;
     this.fullName = fullName;
     this.discount = discount;

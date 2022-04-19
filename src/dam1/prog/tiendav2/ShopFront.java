@@ -50,8 +50,7 @@ public class ShopFront {
   }
 
   /**
-   * Pide al usuario que elija una opción del menu y devuelve la opción
-   * seleccionada en mayúsculas
+   * Pide al usuario que elija una opción del menu y devuelve la opción seleccionada en mayúsculas
    *
    * @param consoleInput entrada del usuario
    * @param menu         menu donde esta el usuario

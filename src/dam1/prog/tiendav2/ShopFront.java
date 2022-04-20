@@ -11,6 +11,7 @@ public class ShopFront {
 
   public static void main(String[] args) {
     Scanner input = new Scanner(System.in);
+    DbController db = new DbController();
     Menu currentMenu = Menu.MENU_PRINCIPAL;
     String selectedOption;
 
@@ -27,15 +28,29 @@ public class ShopFront {
             }
           }
         }
-        case MENU_CLIENTES-> {
+        case MENU_CLIENTES -> {
+          switch (selectedOption) {
+            case "1" -> pintarInventario(input);
+            case "9" -> currentMenu = Menu.MENU_PRINCIPAL;
+            case "0" -> selectedOption = confirmAction(input, "salir") ? "0" : "";
+            default -> {
+            }
+          }
+        }
+        case MENU_INVENTARIO -> {
           switch (selectedOption) {
             case "9" -> currentMenu = Menu.MENU_PRINCIPAL;
+            case "0" -> selectedOption = confirmAction(input, "salir") ? "0" : "";
             default -> {
             }
           }
         }
       }
     } while (!selectedOption.equalsIgnoreCase("0"));
+  }
+
+  private static void pintarInventario(Scanner input) {
+
   }
 
   /**

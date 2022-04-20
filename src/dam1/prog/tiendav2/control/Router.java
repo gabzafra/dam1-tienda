@@ -1,12 +1,13 @@
-package dam1.prog.tiendav2.view;
+package dam1.prog.tiendav2.control;
 
-import dam1.prog.tiendav2.control.DbController;
 import dam1.prog.tiendav2.models.Client;
 import dam1.prog.tiendav2.models.ShoeModel;
+import dam1.prog.tiendav2.view.Menu;
+import dam1.prog.tiendav2.view.MenuItem;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class ShopFront {
+public class Router {
 
   //Colores
   private static final String COLOR_WHITE = "\u001B[0m";
@@ -203,7 +204,7 @@ public class ShopFront {
       }
     }
 
-    if (ShopFront.DB_CONTROLLER.addNewClient(newClient)) {
+    if (Router.DB_CONTROLLER.addNewClient(newClient)) {
       System.out.println(
           COLOR_GREEN + "El cliente " + newClient.getFullName() + " se ha añadido con éxito"
               + COLOR_WHITE);

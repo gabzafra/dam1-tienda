@@ -1,6 +1,8 @@
 package dam1.prog.tiendav2;
 
 
+import java.util.List;
+
 public class MockDB {
 
   private Client[] clientsTable;
@@ -30,19 +32,31 @@ public class MockDB {
         })
     };
     this.modelsTable = new ShoeModel[]{
-        new ShoeModel(1, "CLARKS 88127", "De Vestir", 79.95),
-        new ShoeModel(2, "FLUCHOS 74138", "De Vestir", 99.95),
-        new ShoeModel(3, "MOLINA 59256", "De Vestir", 57.95),
-        new ShoeModel(4, "CALLAGHAN 96163", "De Vestir", 109.95),
-        new ShoeModel(5, "ALPE 97622", "Sandalia", 89.95),
-        new ShoeModel(6, "FLUCHOS 97805", "Sandalia", 84.95),
-        new ShoeModel(7, "PITILLOS 98544", "Sandalia", 69.95),
-        new ShoeModel(8, "PITILLOS 98556", "Sandalia", 64.95),
-        new ShoeModel(9, "ADIDAS 95920", "Deportivo", 99.95),
-        new ShoeModel(10, "MÁS8000 97261", "Deportivo", 84.95),
-        new ShoeModel(11, "CONVERSE 98731", "Deportivo", 69.95),
-        new ShoeModel(12, "NIKE 96085", "Deportivo", 69.95)
+        new ShoeModel(1, "CLARKS 88127", "De Vestir", 3, 79.95),
+        new ShoeModel(2, "FLUCHOS 74138", "De Vestir", 5, 99.95),
+        new ShoeModel(3, "MOLINA 59256", "De Vestir", 0, 57.95),
+        new ShoeModel(4, "CALLAGHAN 96163", "De Vestir", 10, 109.95),
+        new ShoeModel(5, "ALPE 97622", "Sandalia", 23, 89.95),
+        new ShoeModel(6, "FLUCHOS 97805", "Sandalia", 12, 84.95),
+        new ShoeModel(7, "PITILLOS 98544", "Sandalia", 1, 69.95),
+        new ShoeModel(8, "PITILLOS 98556", "Sandalia", 0, 64.95),
+        new ShoeModel(9, "ADIDAS 95920", "Deportivo", 6, 99.95),
+        new ShoeModel(10, "MÁS8000 97261", "Deportivo", 9, 84.95),
+        new ShoeModel(11, "CONVERSE 98731", "Deportivo", 11, 69.95),
+        new ShoeModel(12, "NIKE 96085", "Deportivo", 5, 69.95)
     };
+  }
+
+  public Client[] getClientsTable() {
+    return clientsTable;
+  }
+
+  public Order[] getOrdersTable() {
+    return ordersTable;
+  }
+
+  public ShoeModel[] getAllModels() {
+    return modelsTable;
   }
 }
 

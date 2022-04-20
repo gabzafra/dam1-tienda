@@ -1,6 +1,8 @@
 package dam1.prog.tiendav2;
 
+import java.util.Arrays;
 import java.util.Scanner;
+import java.util.stream.Stream;
 
 public class ShopFront {
 
@@ -8,15 +10,18 @@ public class ShopFront {
   private static final String COLOR_WHITE = "\u001B[0m";
   private static final String COLOR_RED = "\u001B[31m";
   private static final String COLOR_GREEN = "\u001B[32m";
+  private static DbController db = new DbController();
 
   public static void main(String[] args) {
     Scanner input = new Scanner(System.in);
-    DbController db = new DbController();
-    Menu currentMenu = Menu.MENU_PRINCIPAL;
+
+//    Menu currentMenu = Menu.MENU_PRINCIPAL;
+    Menu currentMenu = Menu.MENU_INVENTARIO;
     String selectedOption;
 
     do {
       selectedOption = getOptionFromUser(input, currentMenu);
+
       switch (currentMenu) {
         case MENU_PRINCIPAL -> {
           switch (selectedOption) {
@@ -30,7 +35,6 @@ public class ShopFront {
         }
         case MENU_CLIENTES -> {
           switch (selectedOption) {
-            case "1" -> pintarInventario(input);
             case "9" -> currentMenu = Menu.MENU_PRINCIPAL;
             case "0" -> selectedOption = confirmAction(input, "salir") ? "0" : "";
             default -> {
@@ -39,6 +43,7 @@ public class ShopFront {
         }
         case MENU_INVENTARIO -> {
           switch (selectedOption) {
+            case "1" -> pintarInventario(input);
             case "9" -> currentMenu = Menu.MENU_PRINCIPAL;
             case "0" -> selectedOption = confirmAction(input, "salir") ? "0" : "";
             default -> {
@@ -50,7 +55,24 @@ public class ShopFront {
   }
 
   private static void pintarInventario(Scanner input) {
-
+    ShoeModel[] stock = db.getStock();
+    String fiveColFormat = "| %-6.6s | %-8.8s | %-20.20s | %s%8.8s%s | %8.8s€ |\n";
+    if (stock.length > 0) {
+      System.out.println("+--------+----------+----------------------+----------+-----------+");
+      System.out.printf(fiveColFormat, "Código", "Estilo", "Modelo", "", "Unidades", "", "Precio ");
+      System.out.println("+--------+----------+----------------------+----------+-----------+");
+      Arrays.stream(stock).forEach(model -> {
+        String colored = model.getAvailableUnits() == 0 ? COLOR_RED : COLOR_GREEN;
+        System.out.printf(fiveColFormat, model.getID(), model.getStyle(), model.getDescription(),
+            colored,
+            model.getAvailableUnits(), COLOR_WHITE, model.getPrice());
+      });
+      System.out.println("+--------+----------+----------------------+----------+-----------+");
+    } else {
+      System.out.println(COLOR_RED + "No hay productos en el inventario" + COLOR_WHITE);
+    }
+    System.out.println("Pulse ENTER para continuar");
+    input.nextLine();
   }
 
   /**

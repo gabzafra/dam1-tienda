@@ -16,6 +16,14 @@ public class ShoeModel {
     this.availableUnits = 0;
   }
 
+  public ShoeModel(int ID, String description, String style, int availableUnits, double price) {
+    this.ID = ID;
+    this.description = description;
+    this.style = style;
+    this.price = price;
+    this.availableUnits = availableUnits;
+  }
+
   public int getID() {
     return ID;
   }

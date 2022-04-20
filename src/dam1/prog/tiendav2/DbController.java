@@ -5,7 +5,7 @@ public class DbController {
   private MockDB db;
 
   public DbController() {
-//    this.db = new MockDB();
+    this.db = new MockDB();
   }
 
   //Gestión de pedidos
@@ -39,8 +39,8 @@ public class DbController {
   }
 
   //Gestión de inventario
-  public boolean getStock() {
-    return true;
+  public ShoeModel[] getStock() {
+    return db.getAllModels();
   }
 
   public boolean addShoeModel() {

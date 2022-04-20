@@ -94,8 +94,9 @@ public class ShopFront {
       System.out.println("+--------+----------------------+-----------+");
       System.out.printf(threeColFormat, "Código", "Nombre", "Descuento");
       System.out.println("+--------+----------------------+-----------+");
-      Arrays.stream(rows).forEach(client -> System.out.printf(threeColFormat, client.getID(), client.getFullName(),
-          client.hasDiscount() ? "Si" : "No"));
+      Arrays.stream(rows)
+          .forEach(client -> System.out.printf(threeColFormat, client.getID(), client.getFullName(),
+              client.hasDiscount() ? "Si" : "No"));
       System.out.println("+--------+----------------------+-----------+");
     } else {
       System.out.println(COLOR_RED + "No hay clientes en el sistema" + COLOR_WHITE);
@@ -164,6 +165,11 @@ public class ShopFront {
 
   }
 
+  /**
+   * Pide al usuario los datos de un nuevo cliente e intenta añadirlo al sistema
+   *
+   * @param input entrada de usuario
+   */
   private static void addNewClient(Scanner input) {
     String consoleInput = "";
     boolean flag = true;

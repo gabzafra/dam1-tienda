@@ -3,7 +3,6 @@ package dam1.prog.tiendav2;
 
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
 
 public class MockDB {
 
@@ -49,11 +48,7 @@ public class MockDB {
     };
   }
 
-  public Client[] getClientsTable() {
-    return clientsTable;
-  }
-
-  public Order[] getOrdersTable() {
+  public Order[] getAllOrders() {
     return ordersTable;
   }
 
@@ -65,6 +60,14 @@ public class MockDB {
     return clientsTable;
   }
 
+  /**
+   * Dados los datos de un nuevo cliente lo añade a la tabla de clientes
+   * proporcionándole un nuevo id único. Si no puede añadirlo devuelve
+   * un Cliente con id = -1
+   *
+   * @param newClient nuevo cliente
+   * @return el Cliente con su nuevo id o id a -1 si hay error
+   */
   public Client addClient(Client newClient) {
     int newId = 1;
     if (clientsTable.length > 0) {

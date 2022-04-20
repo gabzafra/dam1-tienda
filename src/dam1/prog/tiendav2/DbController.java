@@ -1,7 +1,6 @@
 package dam1.prog.tiendav2;
 
 import java.util.Arrays;
-import java.util.stream.Stream;
 
 public class DbController {
 
@@ -33,12 +32,19 @@ public class DbController {
   }
 
   //Gestión de clientes
+
+  /**
+   * Devuelve un array con todos los clientes dados de alta en el sistema
+   *
+   * @return todos los clientes del sistema
+   */
   public Client[] getClients() {
     return db.getAllClients();
   }
 
   /**
-   * Intenta añadir un nuevo cliente a la base de datos.
+   * Intenta añadir un nuevo cliente a la base de datos. Devuelve true si el proceso tiene éxito y
+   * false si el usuario ya existe o si hay un error al intentar modificar la base de datos
    *
    * @param newClient nuevo cliente
    * @return true si se consigue añadir, false si hay algún problema
@@ -62,6 +68,12 @@ public class DbController {
   }
 
   //Gestión de inventario
+
+  /**
+   * Devuelve un array con los datos de todos los modelos de zapatos que hay en la tienda
+   *
+   * @return el inventario completo
+   */
   public ShoeModel[] getStock() {
     return db.getAllModels();
   }

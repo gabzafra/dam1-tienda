@@ -9,11 +9,7 @@ public class ShoeModel {
   private int availableUnits;
 
   public ShoeModel(int ID, String description, String style, double price) {
-    this.ID = ID;
-    this.description = description;
-    this.style = style;
-    this.price = price;
-    this.availableUnits = 0;
+    this(ID,description,style,0,price);
   }
 
   public ShoeModel(int ID, String description, String style, int availableUnits, double price) {

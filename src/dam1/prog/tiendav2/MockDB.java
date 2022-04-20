@@ -1,6 +1,8 @@
 package dam1.prog.tiendav2;
 
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class MockDB {
@@ -59,7 +61,25 @@ public class MockDB {
     return modelsTable;
   }
 
-  public Client[] getAllClients() { return clientsTable;
+  public Client[] getAllClients() {
+    return clientsTable;
+  }
+
+  public Client addClient(Client newClient) {
+    int newId = 1;
+    if (clientsTable.length > 0) {
+      newId = Arrays.stream(clientsTable).map(client -> client.getID())
+          .max(Comparator.naturalOrder()).get();
+      newId++;
+    }
+    clientsTable = Arrays.copyOf(clientsTable, clientsTable.length + 1);
+    try {
+      newClient.setID(newId);
+      clientsTable[clientsTable.length - 1] = newClient;
+    } catch (Exception e) {
+      return new Client("", false);
+    }
+    return clientsTable[clientsTable.length - 1];
   }
 }
 

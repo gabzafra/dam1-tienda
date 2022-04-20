@@ -2,9 +2,18 @@ package dam1.prog.tiendav2;
 
 public class Client {
 
-  private final int ID;
+  private int ID;
   private String fullName;
   private boolean discount;
+
+
+  public Client() {
+    this("", false);
+  }
+
+  public Client(String fullName, boolean discount) {
+    this(-1, fullName, discount);
+  }
 
   public Client(int ID, String fullName, boolean discount) {
     this.ID = ID;
@@ -14,6 +23,10 @@ public class Client {
 
   public int getID() {
     return ID;
+  }
+
+  public void setID(int ID) {
+    this.ID = ID;
   }
 
   public String getFullName() {

@@ -9,7 +9,7 @@ public class ShopFront {
   private static final String COLOR_WHITE = "\u001B[0m";
   private static final String COLOR_RED = "\u001B[31m";
   private static final String COLOR_GREEN = "\u001B[32m";
-  private static DbController db = new DbController();
+  private static final DbController DB_CONTROLLER = new DbController();
 
   public static void main(String[] args) {
     Scanner input = new Scanner(System.in);
@@ -34,7 +34,8 @@ public class ShopFront {
         }
         case MENU_CLIENTES -> {
           switch (selectedOption) {
-            case "1" -> pintarTabla(input, db.getClients());
+            case "1" -> pintarTabla(input, DB_CONTROLLER.getClients());
+            case "2" -> addNewClient(input);
             case "9" -> currentMenu = Menu.MENU_PRINCIPAL;
             case "0" -> selectedOption = confirmAction(input, "salir") ? "0" : "";
             default -> {
@@ -43,7 +44,7 @@ public class ShopFront {
         }
         case MENU_INVENTARIO -> {
           switch (selectedOption) {
-            case "1" -> pintarTabla(input, db.getStock());
+            case "1" -> pintarTabla(input, DB_CONTROLLER.getStock());
             case "9" -> currentMenu = Menu.MENU_PRINCIPAL;
             case "0" -> selectedOption = confirmAction(input, "salir") ? "0" : "";
             default -> {
@@ -53,6 +54,8 @@ public class ShopFront {
       }
     } while (!selectedOption.equalsIgnoreCase("0"));
   }
+
+  //Métodos de presentación
 
   /**
    * Dado un array de los modelos del inventario imprime una tabla formateada de sus valores
@@ -91,10 +94,8 @@ public class ShopFront {
       System.out.println("+--------+----------------------+-----------+");
       System.out.printf(threeColFormat, "Código", "Nombre", "Descuento");
       System.out.println("+--------+----------------------+-----------+");
-      Arrays.stream(rows).forEach(client -> {
-        System.out.printf(threeColFormat, client.getID(), client.getFullName(),
-            client.hasDiscount() ? "Si" : "No");
-      });
+      Arrays.stream(rows).forEach(client -> System.out.printf(threeColFormat, client.getID(), client.getFullName(),
+          client.hasDiscount() ? "Si" : "No"));
       System.out.println("+--------+----------------------+-----------+");
     } else {
       System.out.println(COLOR_RED + "No hay clientes en el sistema" + COLOR_WHITE);
@@ -117,6 +118,8 @@ public class ShopFront {
     System.out.println("---------------------------------------");
   }
 
+  //Métodos de la entrada de datos por consola
+
   /**
    * Pide al usuario que pulse Enter para continuar la ejecución
    *
@@ -137,7 +140,6 @@ public class ShopFront {
     System.out.println("¿Seguro que desea " + action + "? s/n");
     return input.nextLine().trim().equalsIgnoreCase("s");
   }
-
 
   /**
    * Pide al usuario que elija una opción del menu y devuelve la opción seleccionada en mayúsculas
@@ -160,5 +162,46 @@ public class ShopFront {
       System.out.println(COLOR_RED + "La opción seleccionada no es válida" + COLOR_WHITE);
     } while (true);
 
+  }
+
+  private static void addNewClient(Scanner input) {
+    String consoleInput = "";
+    boolean flag = true;
+    Client newClient = new Client();
+    while (flag) {
+      System.out.println("Introduzca el nombre del nuevo cliente:");
+      consoleInput = input.nextLine().trim();
+      flag = consoleInput.length() < 4;
+      if (flag) {
+        System.out.println(
+            COLOR_RED + "Debe introducir un nombre de usuario de al menos cuatro caracteres"
+                + COLOR_WHITE);
+      } else {
+        newClient.setFullName(consoleInput);
+      }
+    }
+
+    while (!flag) {
+      System.out.println("¿El cliente " + consoleInput + " tiene descuento? s/n");
+      consoleInput = input.nextLine().trim();
+      flag = consoleInput.equalsIgnoreCase("s") || consoleInput.equalsIgnoreCase("n");
+      if (!flag) {
+        System.out.println(
+            COLOR_RED + "Debe introducir s/n"
+                + COLOR_WHITE);
+      } else {
+        newClient.setDiscount(consoleInput.equalsIgnoreCase("s"));
+      }
+    }
+
+    if (ShopFront.DB_CONTROLLER.addNewClient(newClient)) {
+      System.out.println(
+          COLOR_GREEN + "El cliente " + newClient.getFullName() + " se ha añadido con éxito"
+              + COLOR_WHITE);
+    } else {
+      System.out.println(
+          COLOR_RED + "Se ha producido un error al intentar añadir al cliente" + COLOR_WHITE);
+    }
+    waitEnter(input);
   }
 }

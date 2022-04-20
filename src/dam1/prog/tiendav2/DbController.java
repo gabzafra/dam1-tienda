@@ -1,5 +1,8 @@
 package dam1.prog.tiendav2;
 
+import java.util.Arrays;
+import java.util.stream.Stream;
+
 public class DbController {
 
   private MockDB db;
@@ -34,8 +37,24 @@ public class DbController {
     return db.getAllClients();
   }
 
-  public boolean addNewClient() {
-    return true;
+  /**
+   * Intenta añadir un nuevo cliente a la base de datos.
+   *
+   * @param newClient nuevo cliente
+   * @return true si se consigue añadir, false si hay algún problema
+   */
+  public boolean addNewClient(Client newClient) {
+    boolean clientExists = Arrays.stream(db.getAllClients())
+        .anyMatch(client -> client.getFullName().equals(newClient.getFullName()));
+    if (clientExists) {
+      return false;
+    } else {
+      if (db.addClient(newClient).getID() > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    }
   }
 
   public boolean removeClient() {

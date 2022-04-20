@@ -11,28 +11,42 @@ public class ShopFront {
 
   public static void main(String[] args) {
     Scanner input = new Scanner(System.in);
-    Menu currentMenu = Menu.MENU_1;
+    Menu currentMenu = Menu.MENU_PRINCIPAL;
     String selectedOption;
 
     do {
       selectedOption = getOptionFromUser(input, currentMenu);
       switch (currentMenu) {
-        case MENU_1 -> {
+        case MENU_PRINCIPAL -> {
           switch (selectedOption) {
-            case "1" -> currentMenu = Menu.MENU_2;
+            case "1" -> currentMenu = Menu.MENU_PEDIDOS;
+            case "2" -> currentMenu = Menu.MENU_CLIENTES;
+            case "3" -> currentMenu = Menu.MENU_INVENTARIO;
+            case "0" -> selectedOption = confirmAction(input, "salir") ? "0" : "";
             default -> {
             }
           }
         }
-        case MENU_2 -> {
+        case MENU_CLIENTES-> {
           switch (selectedOption) {
-            case "1" -> currentMenu = Menu.MENU_1;
+            case "9" -> currentMenu = Menu.MENU_PRINCIPAL;
             default -> {
             }
           }
         }
       }
     } while (!selectedOption.equalsIgnoreCase("0"));
+  }
+
+  /**
+   * Pregunta al usuario si desea continuar con una acción
+   *
+   * @param input entrada del usuario
+   * @return true si confirma false si no
+   */
+  private static boolean confirmAction(Scanner input, String action) {
+    System.out.println("¿Seguro que desea " + action + "? s/n");
+    return input.nextLine().trim().equalsIgnoreCase("s");
   }
 
   /**

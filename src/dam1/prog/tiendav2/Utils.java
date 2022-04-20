@@ -1,9 +1,10 @@
 package dam1.prog.tiendav2;
 
+import java.util.Scanner;
+
 public class Utils {
 
   /**
-   *
    * Dada una cadena comprueba si puede convertirse en entero
    *
    * @param number cadena con un entero

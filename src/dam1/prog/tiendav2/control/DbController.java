@@ -1,5 +1,8 @@
-package dam1.prog.tiendav2;
+package dam1.prog.tiendav2.control;
 
+import dam1.prog.tiendav2.models.Client;
+import dam1.prog.tiendav2.models.MockDB;
+import dam1.prog.tiendav2.models.ShoeModel;
 import java.util.Arrays;
 
 public class DbController {

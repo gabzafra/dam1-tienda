@@ -1,4 +1,4 @@
-package dam1.prog.tiendav2;
+package dam1.prog.tiendav2.models;
 
 public class Client {
 

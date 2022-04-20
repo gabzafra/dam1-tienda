@@ -2,8 +2,8 @@ package dam1.prog.tiendav2.control;
 
 import dam1.prog.tiendav2.models.Client;
 import dam1.prog.tiendav2.models.ShoeModel;
-import dam1.prog.tiendav2.view.Menu;
-import dam1.prog.tiendav2.view.MenuItem;
+import dam1.prog.tiendav2.models.Menu;
+import dam1.prog.tiendav2.models.MenuItem;
 import java.util.Arrays;
 import java.util.Scanner;
 

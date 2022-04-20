@@ -1,4 +1,4 @@
-package dam1.prog.tiendav2.view;
+package dam1.prog.tiendav2.models;
 
 public record MenuItem(String optionNumber, String optionLabel) {
 

@@ -6,7 +6,7 @@ import dam1.prog.tiendav2.models.ShoeModel;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class Router {
+public class ShopFront {
 
   //Colores
   private static final String COLOR_WHITE = "\u001B[0m";
@@ -203,7 +203,7 @@ public class Router {
       }
     }
 
-    if (Router.DB_CONTROLLER.addNewClient(newClient)) {
+    if (ShopFront.DB_CONTROLLER.addNewClient(newClient)) {
       System.out.println(
           COLOR_GREEN + "El cliente " + newClient.getFullName() + " se ha añadido con éxito"
               + COLOR_WHITE);

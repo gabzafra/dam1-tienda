@@ -8,8 +8,9 @@ public enum Menu {
       new MenuItem("0", "Salir del programa")}
   ),
   MENU_CLIENTES("CLIENTES", new MenuItem[]{
-      new MenuItem("1", "Añadir cliente"),
-      new MenuItem("2", "Eliminar cliente"),
+      new MenuItem("1", "Ver clientes"),
+      new MenuItem("2", "Añadir cliente"),
+      new MenuItem("3", "Eliminar cliente"),
       new MenuItem("9", "Volver atrás"),
       new MenuItem("0", "Salir del programa")}
   ),

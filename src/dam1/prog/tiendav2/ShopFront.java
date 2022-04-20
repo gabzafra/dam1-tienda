@@ -35,6 +35,7 @@ public class ShopFront {
         }
         case MENU_CLIENTES -> {
           switch (selectedOption) {
+            case "1" -> pintarClientes(input);
             case "9" -> currentMenu = Menu.MENU_PRINCIPAL;
             case "0" -> selectedOption = confirmAction(input, "salir") ? "0" : "";
             default -> {
@@ -52,6 +53,9 @@ public class ShopFront {
         }
       }
     } while (!selectedOption.equalsIgnoreCase("0"));
+  }
+
+  private static void pintarClientes(Scanner input) {
   }
 
   private static void pintarInventario(Scanner input) {

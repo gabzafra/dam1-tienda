@@ -30,6 +30,10 @@ public class DbController {
   }
 
   //Gestión de clientes
+  public Client[] getClients() {
+    return db.getAllClients();
+  }
+
   public boolean addNewClient() {
     return true;
   }

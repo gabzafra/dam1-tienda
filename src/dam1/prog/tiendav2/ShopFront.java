@@ -16,7 +16,7 @@ public class ShopFront {
     Scanner input = new Scanner(System.in);
 
 //    Menu currentMenu = Menu.MENU_PRINCIPAL;
-    Menu currentMenu = Menu.MENU_INVENTARIO;
+    Menu currentMenu = Menu.MENU_CLIENTES;
     String selectedOption;
 
     do {
@@ -55,9 +55,6 @@ public class ShopFront {
     } while (!selectedOption.equalsIgnoreCase("0"));
   }
 
-  private static void pintarClientes(Scanner input) {
-  }
-
   private static void pintarInventario(Scanner input) {
     ShoeModel[] stock = db.getStock();
     String fiveColFormat = "| %-6.6s | %-8.8s | %-20.20s | %s%8.8s%s | %8.8s€ |\n";
@@ -74,6 +71,25 @@ public class ShopFront {
       System.out.println("+--------+----------+----------------------+----------+-----------+");
     } else {
       System.out.println(COLOR_RED + "No hay productos en el inventario" + COLOR_WHITE);
+    }
+    System.out.println("Pulse ENTER para continuar");
+    input.nextLine();
+  }
+
+  private static void pintarClientes(Scanner input) {
+    Client[] clients = db.getClients();
+    String threeColFormat = "| %-6.6s | %-20.20s | %9.9s |\n";
+    if (clients.length > 0) {
+      System.out.println("+--------+----------------------+-----------+");
+      System.out.printf(threeColFormat, "Código", "Nombre", "Descuento");
+      System.out.println("+--------+----------------------+-----------+");
+      Arrays.stream(clients).forEach(client -> {
+        System.out.printf(threeColFormat, client.getID(), client.getFullName(),
+            client.hasDiscount() ? "Si" : "No");
+      });
+      System.out.println("+--------+----------------------+-----------+");
+    } else {
+      System.out.println(COLOR_RED + "No hay clientes en el sistema" + COLOR_WHITE);
     }
     System.out.println("Pulse ENTER para continuar");
     input.nextLine();

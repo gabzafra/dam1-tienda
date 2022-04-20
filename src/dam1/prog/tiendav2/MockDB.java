@@ -58,6 +58,9 @@ public class MockDB {
   public ShoeModel[] getAllModels() {
     return modelsTable;
   }
+
+  public Client[] getAllClients() { return clientsTable;
+  }
 }
 
 

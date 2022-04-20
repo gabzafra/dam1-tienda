@@ -13,6 +13,7 @@ public class ShopFront {
     Scanner input = new Scanner(System.in);
     Menu currentMenu = Menu.MENU_1;
     String selectedOption;
+
     do {
       selectedOption = getOptionFromUser(input, currentMenu);
       switch (currentMenu) {

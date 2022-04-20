@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class DbController {
 
-  private MockDB db;
+  private final MockDB db;
 
   public DbController() {
     this.db = new MockDB();
@@ -55,11 +55,7 @@ public class DbController {
     if (clientExists) {
       return false;
     } else {
-      if (db.addClient(newClient).getID() > 0) {
-        return true;
-      } else {
-        return false;
-      }
+      return db.addClient(newClient).getID() > 0;
     }
   }
 

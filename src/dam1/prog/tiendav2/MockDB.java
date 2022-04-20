@@ -71,7 +71,7 @@ public class MockDB {
   public Client addClient(Client newClient) {
     int newId = 1;
     if (clientsTable.length > 0) {
-      newId = Arrays.stream(clientsTable).map(client -> client.getID())
+      newId = Arrays.stream(clientsTable).map(Client::getID)
           .max(Comparator.naturalOrder()).get();
       newId++;
     }

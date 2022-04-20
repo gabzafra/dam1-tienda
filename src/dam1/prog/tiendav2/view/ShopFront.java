@@ -67,18 +67,18 @@ public class ShopFront {
    * @param rows  modelos a imprimir
    */
   private static void pintarTabla(Scanner input, ShoeModel[] rows) {
-    String fiveColFormat = "| %-6.6s | %-8.8s | %-20.20s | %s%8.8s%s | %8.8s€ |\n";
+    String fiveColFormat = "| %-6.6s | %-10.10s | %-20.20s | %s%8.8s%s | %8.8s€ |\n";
     if (rows.length > 0) {
-      System.out.println("+--------+----------+----------------------+----------+-----------+");
+      System.out.println("+--------+------------+----------------------+----------+-----------+");
       System.out.printf(fiveColFormat, "Código", "Estilo", "Modelo", "", "Unidades", "", "Precio ");
-      System.out.println("+--------+----------+----------------------+----------+-----------+");
+      System.out.println("+--------+------------+----------------------+----------+-----------+");
       Arrays.stream(rows).forEach(model -> {
         String colored = model.getAvailableUnits() == 0 ? COLOR_RED : COLOR_GREEN;
         System.out.printf(fiveColFormat, model.getID(), model.getStyle(), model.getDescription(),
             colored,
             model.getAvailableUnits(), COLOR_WHITE, model.getPrice());
       });
-      System.out.println("+--------+----------+----------------------+----------+-----------+");
+      System.out.println("+--------+------------+----------------------+----------+-----------+");
     } else {
       System.out.println(COLOR_RED + "No hay productos en el inventario" + COLOR_WHITE);
     }

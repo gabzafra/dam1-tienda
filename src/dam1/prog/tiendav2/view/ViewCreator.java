@@ -10,12 +10,14 @@ import java.util.Scanner;
 
 public class ViewCreator {
 
+  private static final Scanner input = new Scanner(System.in);
+
   /**
    * Dado un array de los modelos del inventario imprime una tabla formateada de sus valores
    *
-   * @param rows  modelos a imprimir
+   * @param rows modelos a imprimir
    */
-  public static void pintarTabla( ShoeModel[] rows) {
+  public static void pintarTabla(ShoeModel[] rows) {
     String fiveColFormat = "| %-6.6s | %-10.10s | %-20.20s | %s%8.8s%s | %8.8s€ |\n";
     if (rows.length > 0) {
       System.out.println("+--------+------------+----------------------+----------+-----------+");
@@ -36,7 +38,7 @@ public class ViewCreator {
   /**
    * Dado un array de los clientes imprime una tabla formateada de sus valores
    *
-   * @param rows  clientes a imprimir
+   * @param rows clientes a imprimir
    */
   public static void pintarTabla(Client[] rows) {
     String threeColFormat = "| %-6.6s | %-20.20s | %9.9s |\n";
@@ -66,5 +68,19 @@ public class ViewCreator {
       System.out.println(option.getOptionNumber() + ". " + option.getOptionLabel());
     }
     System.out.println("---------------------------------------");
+  }
+
+  public static boolean pedirConfirmacion(String mensaje) {
+    boolean entradaValida = false;
+    String userInput = "";
+    while (!entradaValida) {
+      System.out.println(mensaje);
+      userInput = input.nextLine();
+      entradaValida = userInput.equalsIgnoreCase("s") || userInput.equalsIgnoreCase("n");
+      if (!entradaValida) {
+        System.out.println(Utils.COLOR_RED + "Debe introducir s/n" + Utils.COLOR_WHITE);
+      }
+    }
+    return userInput.equalsIgnoreCase("s");
   }
 }

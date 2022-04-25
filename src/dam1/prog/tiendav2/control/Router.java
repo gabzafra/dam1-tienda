@@ -99,16 +99,13 @@ public class Router {
     String userInput;
     do {
       ViewCreator.pintarMenu(menu);
-      System.out.println("Por favor elija una opción del menú:");
-      userInput = consoleInput.nextLine().trim();
+      userInput = ViewCreator.pedirEntradaTexto("Por favor elija una opción del menú:");
       for (MenuItem opcion : menu.getOptionList()) {
         if (opcion.getOptionNumber().equalsIgnoreCase(userInput)) {
           return userInput.toUpperCase();
         }
       }
-      System.out.println(
-          dam1.prog.tiendav2.Utils.COLOR_RED + "La opción seleccionada no es válida"
-              + dam1.prog.tiendav2.Utils.COLOR_WHITE);
+      ViewCreator.mostrarError("La opción seleccionada no es válida");
     } while (true);
 
   }

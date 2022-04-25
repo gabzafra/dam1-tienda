@@ -13,8 +13,8 @@ public class Router {
   public static void main(String[] args) {
     Scanner input = new Scanner(System.in);
 
-//    Menu currentMenu = Menu.MENU_PRINCIPAL;
-    Menu currentMenu = Menu.MENU_CLIENTES;
+    Menu currentMenu = Menu.MENU_PRINCIPAL;
+
     String selectedOption;
 
     do {
@@ -26,7 +26,8 @@ public class Router {
             case "1" -> currentMenu = Menu.MENU_PEDIDOS;
             case "2" -> currentMenu = Menu.MENU_CLIENTES;
             case "3" -> currentMenu = Menu.MENU_INVENTARIO;
-            case "0" -> selectedOption = confirmAction(input, "salir") ? "0" : "";
+            case "0" -> selectedOption =
+                ViewCreator.pedirConfirmacion("¿Desea salir? s/n:") ? "0" : "";
             default -> {
             }
           }
@@ -39,7 +40,8 @@ public class Router {
             }
             case "2" -> addNewClient(input);
             case "9" -> currentMenu = Menu.MENU_PRINCIPAL;
-            case "0" -> selectedOption = confirmAction(input, "salir") ? "0" : "";
+            case "0" -> selectedOption =
+                ViewCreator.pedirConfirmacion("¿Desea salir? s/n:") ? "0" : "";
             default -> {
             }
           }
@@ -51,7 +53,8 @@ public class Router {
               waitEnter(input);
             }
             case "9" -> currentMenu = Menu.MENU_PRINCIPAL;
-            case "0" -> selectedOption = confirmAction(input, "salir") ? "0" : "";
+            case "0" -> selectedOption =
+                ViewCreator.pedirConfirmacion("¿Desea salir? s/n:") ? "0" : "";
             default -> {
             }
           }

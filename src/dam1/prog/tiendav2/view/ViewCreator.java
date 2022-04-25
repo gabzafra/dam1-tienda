@@ -70,6 +70,15 @@ public class ViewCreator {
     System.out.println("---------------------------------------");
   }
 
+  /**
+   * Muestra al usuario con un mensaje dado por parámetro y a continuación
+   * espera que la confirme escribiendo "s" o  "n". Si escribe "s" devuelve
+   * true, si escribe "n" false y con otra entrada lanza un mensaje de error
+   * y solicita de nuevo la entrada al usuario
+   *
+   * @param mensaje mensaje para el usuario
+   * @return true si se confirma false si no
+   */
   public static boolean pedirConfirmacion(String mensaje) {
     boolean entradaValida = false;
     String userInput = "";

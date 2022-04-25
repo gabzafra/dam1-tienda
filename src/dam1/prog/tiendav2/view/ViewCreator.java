@@ -86,7 +86,7 @@ public class ViewCreator {
       userInput = input.nextLine().trim();
       entradaValida = userInput.equalsIgnoreCase("s") || userInput.equalsIgnoreCase("n");
       if (!entradaValida) {
-        System.out.println(Utils.COLOR_RED + "Debe introducir s/n" + Utils.COLOR_WHITE);
+        mostrarError("Debe introducir s/n");
       }
     }
     return userInput.equalsIgnoreCase("s");
@@ -108,9 +108,18 @@ public class ViewCreator {
       userInput = input.nextLine().trim();
       entradaValida = userInput.length() > 0;
       if (!entradaValida) {
-        System.out.println(Utils.COLOR_RED + "Debe escribir algo" + Utils.COLOR_WHITE);
+        mostrarError("Debe escribir algo");
       }
     }
     return userInput;
+  }
+
+  /**
+   * Muestra en rojo un mensaje de error pasado por parámetro
+   *
+   * @param mensaje mensaje para el usuario
+   */
+  public static void mostrarError(String mensaje){
+    System.out.println(Utils.COLOR_RED + mensaje + Utils.COLOR_WHITE);
   }
 }

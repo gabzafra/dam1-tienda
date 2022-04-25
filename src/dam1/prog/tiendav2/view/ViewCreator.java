@@ -71,10 +71,9 @@ public class ViewCreator {
   }
 
   /**
-   * Muestra al usuario con un mensaje dado por parámetro y a continuación
-   * espera que la confirme escribiendo "s" o  "n". Si escribe "s" devuelve
-   * true, si escribe "n" false y con otra entrada lanza un mensaje de error
-   * y solicita de nuevo la entrada al usuario
+   * Muestra al usuario con un mensaje dado por parámetro y a continuación espera que la confirme
+   * escribiendo "s" o  "n". Si escribe "s" devuelve true, si escribe "n" false y con otra entrada
+   * lanza un mensaje de error y solicita de nuevo la entrada al usuario
    *
    * @param mensaje mensaje para el usuario
    * @return true si se confirma false si no
@@ -84,12 +83,34 @@ public class ViewCreator {
     String userInput = "";
     while (!entradaValida) {
       System.out.println(mensaje);
-      userInput = input.nextLine();
+      userInput = input.nextLine().trim();
       entradaValida = userInput.equalsIgnoreCase("s") || userInput.equalsIgnoreCase("n");
       if (!entradaValida) {
         System.out.println(Utils.COLOR_RED + "Debe introducir s/n" + Utils.COLOR_WHITE);
       }
     }
     return userInput.equalsIgnoreCase("s");
+  }
+
+  /**
+   * Muestra al usuario con un mensaje dado por parámetro y a continuación espera una entrada
+   * de texto. Comprueba que esta tiene contenido sin contar espacios laterales. Y si no la
+   * vuelve a solicitar. Si tiene contenido la devuelve.
+   *
+   * @param mensaje mensaje para el usuario
+   * @return entrada saneada
+   */
+  public static String pedirEntradaTexto(String mensaje) {
+    String userInput = "";
+    boolean entradaValida = false;
+    while (!entradaValida) {
+      System.out.println(mensaje);
+      userInput = input.nextLine().trim();
+      entradaValida = userInput.length() > 0;
+      if (!entradaValida) {
+        System.out.println(Utils.COLOR_RED + "Debe escribir algo" + Utils.COLOR_WHITE);
+      }
+    }
+    return userInput;
   }
 }

@@ -11,6 +11,7 @@ public class Router {
   private static final DbController DB_CONTROLLER = new DbController();
 
   public static void main(String[] args) {
+    System.out.println(ViewCreator.pedirEntradaTexto("Dame argooo payoooo"));
     Scanner input = new Scanner(System.in);
 
 //    Menu currentMenu = Menu.MENU_PRINCIPAL;

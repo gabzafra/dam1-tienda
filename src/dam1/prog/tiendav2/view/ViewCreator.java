@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class ViewCreator {
 
-  private static final Scanner input = new Scanner(System.in);
+  private static final Scanner INPUT = new Scanner(System.in);
 
   /**
    * Dado un array de los modelos del inventario imprime una tabla formateada de sus valores
@@ -83,7 +83,7 @@ public class ViewCreator {
     String userInput = "";
     while (!entradaValida) {
       System.out.println(mensaje);
-      userInput = input.nextLine().trim();
+      userInput = INPUT.nextLine().trim();
       entradaValida = userInput.equalsIgnoreCase("s") || userInput.equalsIgnoreCase("n");
       if (!entradaValida) {
         mostrarError("Debe introducir s/n");
@@ -93,9 +93,9 @@ public class ViewCreator {
   }
 
   /**
-   * Muestra al usuario con un mensaje dado por parámetro y a continuación espera una entrada
-   * de texto. Comprueba que esta tiene contenido sin contar espacios laterales. Y si no la
-   * vuelve a solicitar. Si tiene contenido la devuelve.
+   * Muestra al usuario con un mensaje dado por parámetro y a continuación espera una entrada de
+   * texto. Comprueba que esta tiene contenido sin contar espacios laterales. Y si no la vuelve a
+   * solicitar. Si tiene contenido la devuelve.
    *
    * @param mensaje mensaje para el usuario
    * @return entrada saneada
@@ -105,7 +105,7 @@ public class ViewCreator {
     boolean entradaValida = false;
     while (!entradaValida) {
       System.out.println(mensaje);
-      userInput = input.nextLine().trim();
+      userInput = INPUT.nextLine().trim();
       entradaValida = userInput.length() > 0;
       if (!entradaValida) {
         mostrarError("Debe escribir algo");
@@ -119,17 +119,33 @@ public class ViewCreator {
    *
    * @param mensaje mensaje para el usuario
    */
-  public static void mostrarError(String mensaje){
+  public static void mostrarError(String mensaje) {
     System.out.println(Utils.COLOR_RED + mensaje + Utils.COLOR_WHITE);
   }
 
   /**
-   * Pide al usuario que pulse Enter para continuar la ejecución
+   * Muestra en verde un mensaje de éxito pasado por parámetro
    *
-   * @param input entrada del usuario
+   * @param mensaje mensaje para el usuario
    */
-  public static void waitEnter(Scanner input) {
+  public static void mostrarExito(String mensaje) {
+    System.out.println(Utils.COLOR_GREEN + mensaje + Utils.COLOR_WHITE);
+  }
+
+  /**
+   * Muestra en blanco un mensaje pasado por parámetro
+   *
+   * @param mensaje mensaje para el usuario
+   */
+  public static void mostraMensaje(String mensaje) {
+    System.out.println(mensaje);
+  }
+
+  /**
+   * Pide al usuario que pulse Enter para continuar la ejecución
+   */
+  public static void waitEnter() {
     System.out.println("Pulse ENTER para continuar");
-    input.nextLine();
+    INPUT.nextLine();
   }
 }

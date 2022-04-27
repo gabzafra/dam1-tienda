@@ -4,21 +4,19 @@ import dam1.prog.tiendav2.models.Client;
 import dam1.prog.tiendav2.models.Menu;
 import dam1.prog.tiendav2.models.MenuItem;
 import dam1.prog.tiendav2.view.ViewCreator;
-import java.util.Scanner;
 
 public class Router {
 
   private static final DbController DB_CONTROLLER = new DbController();
 
   public static void main(String[] args) {
-    Scanner input = new Scanner(System.in);
 
     Menu currentMenu = Menu.MENU_PRINCIPAL;
 
     String selectedOption;
 
     do {
-      selectedOption = getOptionFromUser(input, currentMenu);
+      selectedOption = getOptionFromUser(currentMenu);
 
       switch (currentMenu) {
         case MENU_PRINCIPAL -> {
@@ -36,9 +34,9 @@ public class Router {
           switch (selectedOption) {
             case "1" -> {
               ViewCreator.pintarTabla(DB_CONTROLLER.getClients());
-              ViewCreator.waitEnter(input);
+              ViewCreator.waitEnter();
             }
-            case "2" -> addNewClient(input);
+            case "2" -> addNewClient();
             case "9" -> currentMenu = Menu.MENU_PRINCIPAL;
             case "0" -> selectedOption =
                 ViewCreator.pedirConfirmacion("¿Desea salir? s/n:") ? "0" : "";
@@ -50,7 +48,7 @@ public class Router {
           switch (selectedOption) {
             case "1" -> {
               ViewCreator.pintarTabla(DB_CONTROLLER.getStock());
-              ViewCreator.waitEnter(input);
+              ViewCreator.waitEnter();
             }
             case "9" -> currentMenu = Menu.MENU_PRINCIPAL;
             case "0" -> selectedOption =
@@ -67,25 +65,15 @@ public class Router {
 
   //Métodos de la entrada de datos por consola
 
-  /**
-   * Pregunta al usuario si desea continuar con una acción
-   *
-   * @param input entrada del usuario
-   * @return true si confirma false si no
-   */
-  private static boolean confirmAction(Scanner input, String action) {
-    System.out.println("¿Seguro que desea " + action + "? s/n");
-    return input.nextLine().trim().equalsIgnoreCase("s");
-  }
+
 
   /**
    * Pide al usuario que elija una opción del menu y devuelve la opción seleccionada en mayúsculas
    *
-   * @param consoleInput entrada del usuario
    * @param menu         menu donde esta el usuario
    * @return opción seleccionada en mayusculas
    */
-  private static String getOptionFromUser(Scanner consoleInput, Menu menu) {
+  private static String getOptionFromUser(Menu menu) {
     String userInput;
     do {
       ViewCreator.pintarMenu(menu);
@@ -102,51 +90,31 @@ public class Router {
 
   /**
    * Pide al usuario los datos de un nuevo cliente e intenta añadirlo al sistema
-   *
-   * @param input entrada de usuario
    */
-  private static void addNewClient(Scanner input) {
+  private static void addNewClient() {
     String consoleInput = "";
     boolean flag = true;
     Client newClient = new Client();
     while (flag) {
-      System.out.println("Introduzca el nombre del nuevo cliente:");
-      consoleInput = input.nextLine().trim();
+      consoleInput = ViewCreator.pedirEntradaTexto("Introduzca el nombre del nuevo cliente:");
       flag = consoleInput.length() < 4;
       if (flag) {
-        System.out.println(
-            dam1.prog.tiendav2.Utils.COLOR_RED
-                + "Debe introducir un nombre de usuario de al menos cuatro caracteres"
-                + dam1.prog.tiendav2.Utils.COLOR_WHITE);
+        ViewCreator.mostrarError(
+            "Debe introducir un nombre de usuario de al menos cuatro caracteres");
       } else {
         newClient.setFullName(consoleInput);
       }
     }
 
-    while (!flag) {
-      System.out.println("¿El cliente " + consoleInput + " tiene descuento? s/n");
-      consoleInput = input.nextLine().trim();
-      flag = consoleInput.equalsIgnoreCase("s") || consoleInput.equalsIgnoreCase("n");
-      if (!flag) {
-        System.out.println(
-            dam1.prog.tiendav2.Utils.COLOR_RED + "Debe introducir s/n"
-                + dam1.prog.tiendav2.Utils.COLOR_WHITE);
-      } else {
-        newClient.setDiscount(consoleInput.equalsIgnoreCase("s"));
-      }
-    }
+    newClient.setDiscount(
+        ViewCreator.pedirConfirmacion("¿El cliente " + consoleInput + " tiene descuento? s/n"));
 
     if (Router.DB_CONTROLLER.addNewClient(newClient)) {
-      System.out.println(
-          dam1.prog.tiendav2.Utils.COLOR_GREEN + "El cliente " + newClient.getFullName()
-              + " se ha añadido con éxito"
-              + dam1.prog.tiendav2.Utils.COLOR_WHITE);
+      ViewCreator.mostrarExito("El cliente " + newClient.getFullName()
+          + " se ha añadido con éxito");
     } else {
-      System.out.println(
-          dam1.prog.tiendav2.Utils.COLOR_RED
-              + "Se ha producido un error al intentar añadir al cliente"
-              + dam1.prog.tiendav2.Utils.COLOR_WHITE);
+      ViewCreator.mostrarError("Se ha producido un error al intentar añadir al cliente");
     }
-    ViewCreator.waitEnter(input);
+    ViewCreator.waitEnter();
   }
 }

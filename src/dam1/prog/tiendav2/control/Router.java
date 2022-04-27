@@ -61,12 +61,6 @@ public class Router {
     } while (!selectedOption.equalsIgnoreCase("0"));
   }
 
-  //Métodos de presentación
-
-  //Métodos de la entrada de datos por consola
-
-
-
   /**
    * Pide al usuario que elija una opción del menu y devuelve la opción seleccionada en mayúsculas
    *

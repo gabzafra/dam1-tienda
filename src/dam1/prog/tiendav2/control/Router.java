@@ -36,7 +36,7 @@ public class Router {
           switch (selectedOption) {
             case "1" -> {
               ViewCreator.pintarTabla(DB_CONTROLLER.getClients());
-              waitEnter(input);
+              ViewCreator.waitEnter(input);
             }
             case "2" -> addNewClient(input);
             case "9" -> currentMenu = Menu.MENU_PRINCIPAL;
@@ -50,7 +50,7 @@ public class Router {
           switch (selectedOption) {
             case "1" -> {
               ViewCreator.pintarTabla(DB_CONTROLLER.getStock());
-              waitEnter(input);
+              ViewCreator.waitEnter(input);
             }
             case "9" -> currentMenu = Menu.MENU_PRINCIPAL;
             case "0" -> selectedOption =
@@ -66,16 +66,6 @@ public class Router {
   //Métodos de presentación
 
   //Métodos de la entrada de datos por consola
-
-  /**
-   * Pide al usuario que pulse Enter para continuar la ejecución
-   *
-   * @param input entrada del usuario
-   */
-  private static void waitEnter(Scanner input) {
-    System.out.println("Pulse ENTER para continuar");
-    input.nextLine();
-  }
 
   /**
    * Pregunta al usuario si desea continuar con una acción
@@ -157,6 +147,6 @@ public class Router {
               + "Se ha producido un error al intentar añadir al cliente"
               + dam1.prog.tiendav2.Utils.COLOR_WHITE);
     }
-    waitEnter(input);
+    ViewCreator.waitEnter(input);
   }
 }

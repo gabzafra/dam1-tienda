@@ -122,4 +122,14 @@ public class ViewCreator {
   public static void mostrarError(String mensaje){
     System.out.println(Utils.COLOR_RED + mensaje + Utils.COLOR_WHITE);
   }
+
+  /**
+   * Pide al usuario que pulse Enter para continuar la ejecución
+   *
+   * @param input entrada del usuario
+   */
+  public static void waitEnter(Scanner input) {
+    System.out.println("Pulse ENTER para continuar");
+    input.nextLine();
+  }
 }

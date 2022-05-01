@@ -163,6 +163,19 @@ public class MockDB {
         .toArray(Order[]::new);
     return ordersTable.length < initialAmtOrders;
   }
+
+  /**
+   * Dado un código ID de un modelo intenta eliminar su registro de la tabla modelsTable.
+   *
+   * @param modelID id del registro a eliminar
+   * @return true si se eliminó false si no
+   */
+  public boolean deleteModel(int modelID) {
+    int initialAmtModels = modelsTable.length;
+    modelsTable = Arrays.stream(modelsTable).filter(model -> model.getID() != modelID)
+        .toArray(ShoeModel[]::new);
+    return modelsTable.length < initialAmtModels;
+  }
 }
 
 

@@ -2,14 +2,14 @@ package dam1.prog.tiendav2.models;
 
 public class ShoeModel {
 
-  private final int ID;
+  private int ID;
   private String description;
   private String style;
   private double price;
   private int availableUnits;
 
   public ShoeModel(int ID, String description, String style, double price) {
-    this(ID,description,style,0,price);
+    this(ID, description, style, 0, price);
   }
 
   public ShoeModel(int ID, String description, String style, int availableUnits, double price) {
@@ -22,6 +22,10 @@ public class ShoeModel {
 
   public int getID() {
     return ID;
+  }
+
+  public void setID(int ID) {
+    this.ID = ID;
   }
 
   public String getDescription() {

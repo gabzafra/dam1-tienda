@@ -3,7 +3,6 @@ package dam1.prog.tiendav2.models;
 
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.stream.Collectors;
 
 public class MockDB {
 
@@ -63,12 +62,12 @@ public class MockDB {
 
   /**
    * Dados los datos de un nuevo cliente lo añade a la tabla de clientes proporcionándole un nuevo
-   * id único. Si no puede añadirlo devuelve un Cliente con id = -1
+   * id único. Si no puede añadirlo devuelve un Cliente con ID = -1
    *
    * @param newClient nuevo cliente
    * @return el Cliente con su nuevo id o id a -1 si hay error
    */
-  public Client addClient(Client newClient) {
+  public Client add(Client newClient) {
     int newId = 1;
     if (clientsTable.length > 0) {
       newId = Arrays.stream(clientsTable).map(Client::getID)
@@ -80,9 +79,57 @@ public class MockDB {
       newClient.setID(newId);
       clientsTable[clientsTable.length - 1] = newClient;
     } catch (Exception e) {
-      return new Client("", false);
+      return new Client(-1, "", false);
     }
     return clientsTable[clientsTable.length - 1];
+  }
+
+  /**
+   * Dados los datos de un nuevo modelo lo añade a la tabla de inventario proporcionándole un nuevo
+   * id único. Si no puede añadirlo devuelve un Modelo con ID = -1
+   *
+   * @param newModel nuevo cliente
+   * @return el Cliente con su nuevo id o id a -1 si hay error
+   */
+  public ShoeModel add(ShoeModel newModel) {
+    int newId = 1;
+    if (modelsTable.length > 0) {
+      newId = Arrays.stream(modelsTable).map(ShoeModel::getID)
+          .max(Comparator.naturalOrder()).get();
+      newId++;
+    }
+    modelsTable = Arrays.copyOf(modelsTable, modelsTable.length + 1);
+    try {
+      newModel.setID(newId);
+      modelsTable[modelsTable.length - 1] = newModel;
+    } catch (Exception e) {
+      return new ShoeModel(-1, "", "", 0);
+    }
+    return modelsTable[modelsTable.length - 1];
+  }
+
+  /**
+   * Dados los datos de un nuevo pedido lo añade a la tabla de pedidos proporcionándole un nuevo id
+   * único. Si no puede añadirlo devuelve un Order con ID = -1
+   *
+   * @param newOrder nuevo cliente
+   * @return el Cliente con su nuevo id o id a -1 si hay error
+   */
+  public Order add(Order newOrder) {
+    int newId = 1;
+    if (ordersTable.length > 0) {
+      newId = Arrays.stream(ordersTable).map(Order::getID)
+          .max(Comparator.naturalOrder()).get();
+      newId++;
+    }
+    ordersTable = Arrays.copyOf(ordersTable, ordersTable.length + 1);
+    try {
+      newOrder.setID(newId);
+      ordersTable[ordersTable.length - 1] = newOrder;
+    } catch (Exception e) {
+      return new Order(-1, 0, "");
+    }
+    return ordersTable[ordersTable.length - 1];
   }
 
   /**

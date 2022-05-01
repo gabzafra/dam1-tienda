@@ -2,7 +2,7 @@ package dam1.prog.tiendav2.models;
 
 public class Order {
 
-  private final int ID;
+  private int ID;
   private int ownerID;
   private String status;
   private Shoe[] productList;
@@ -23,6 +23,10 @@ public class Order {
 
   public int getID() {
     return ID;
+  }
+
+  public void setID(int ID) {
+    this.ID = ID;
   }
 
   public int getOwnerID() {

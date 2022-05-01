@@ -58,7 +58,7 @@ public class DbController {
     if (clientExists) {
       return false;
     } else {
-      return db.addClient(newClient).getID() > 0;
+      return db.add(newClient).getID() > 0;
     }
   }
 

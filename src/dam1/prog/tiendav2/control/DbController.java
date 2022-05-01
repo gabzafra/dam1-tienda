@@ -62,8 +62,18 @@ public class DbController {
     }
   }
 
+  /**
+   * Intenta eliminar un cliente de la base de datos
+   *
+   * @param clientId código Id del cliente
+   * @return true si se elimina con éxito, false si no
+   */
   public boolean removeClient(String clientId) {
-    return db.deleteClient(clientId);
+    try {
+      return db.deleteClient(Integer.parseInt(clientId));
+    } catch (Exception e) {
+      return false;
+    }
   }
 
   //Gestión de inventario

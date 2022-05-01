@@ -37,6 +37,7 @@ public class Router {
               ViewCreator.waitEnter();
             }
             case "2" -> addNewClient();
+            case "3" -> deleteClient();
             case "9" -> currentMenu = Menu.MENU_PRINCIPAL;
             case "0" -> selectedOption =
                 ViewCreator.pedirConfirmacion("¿Desea salir? s/n:") ? "0" : "";
@@ -61,7 +62,7 @@ public class Router {
     } while (!selectedOption.equalsIgnoreCase("0"));
   }
 
-  /**
+   /**
    * Pide al usuario que elija una opción del menu y devuelve la opción seleccionada en mayúsculas
    *
    * @param menu         menu donde esta el usuario
@@ -110,5 +111,8 @@ public class Router {
       ViewCreator.mostrarError("Se ha producido un error al intentar añadir al cliente");
     }
     ViewCreator.waitEnter();
+  }
+  private static void deleteClient() {
+    DB_CONTROLLER.removeClient("1234");
   }
 }

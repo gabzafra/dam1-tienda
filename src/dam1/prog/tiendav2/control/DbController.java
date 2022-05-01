@@ -62,8 +62,8 @@ public class DbController {
     }
   }
 
-  public boolean removeClient() {
-    return true;
+  public boolean removeClient(String clientId) {
+    return db.deleteClient(clientId);
   }
 
   //Gestión de inventario

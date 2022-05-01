@@ -3,6 +3,7 @@ package dam1.prog.tiendav2.models;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.stream.Collectors;
 
 public class MockDB {
 
@@ -83,6 +84,20 @@ public class MockDB {
       return new Client("", false);
     }
     return clientsTable[clientsTable.length - 1];
+  }
+
+  /**
+   * Dado un código ID de un cliente intenta eliminar su registro
+   * de la table clientsTable.
+   *
+   * @param clientId id del registro a eliminar
+   * @return true si se eliminó false si no
+   */
+  public boolean deleteClient(int clientId) {
+    int initialAmtClients = clientsTable.length;
+    clientsTable = Arrays.stream(clientsTable).filter(cliente -> cliente.getID() != clientId)
+        .toArray(Client[]::new);
+    return clientsTable.length < initialAmtClients;
   }
 }
 

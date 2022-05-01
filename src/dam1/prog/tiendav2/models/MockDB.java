@@ -133,16 +133,35 @@ public class MockDB {
   }
 
   /**
-   * Dado un código ID de un cliente intenta eliminar su registro de la table clientsTable.
+   * Dado un código ID de un cliente intenta eliminar en cascada su registro de la tabla
+   * clientsTable.
    *
-   * @param clientId id del registro a eliminar
+   * @param clientID id del registro a eliminar
    * @return true si se eliminó false si no
    */
-  public boolean deleteClient(int clientId) {
+  public boolean deleteClient(int clientID) {
     int initialAmtClients = clientsTable.length;
-    clientsTable = Arrays.stream(clientsTable).filter(cliente -> cliente.getID() != clientId)
+
+    ordersTable = Arrays.stream(ordersTable).filter(order -> order.getOwnerID() != clientID)
+        .toArray(Order[]::new);
+
+    clientsTable = Arrays.stream(clientsTable).filter(cliente -> cliente.getID() != clientID)
         .toArray(Client[]::new);
+
     return clientsTable.length < initialAmtClients;
+  }
+
+  /**
+   * Dado un código ID de un pedido intenta eliminar su registro de la tabla orderTable.
+   *
+   * @param orderID id del registro a eliminar
+   * @return true si se eliminó false si no
+   */
+  public boolean deleteOrder(int orderID) {
+    int initialAmtOrders = ordersTable.length;
+    ordersTable = Arrays.stream(ordersTable).filter(order -> order.getID() != orderID)
+        .toArray(Order[]::new);
+    return ordersTable.length < initialAmtOrders;
   }
 }
 

@@ -62,10 +62,10 @@ public class Router {
     } while (!selectedOption.equalsIgnoreCase("0"));
   }
 
-   /**
+  /**
    * Pide al usuario que elija una opción del menu y devuelve la opción seleccionada en mayúsculas
    *
-   * @param menu         menu donde esta el usuario
+   * @param menu menu donde esta el usuario
    * @return opción seleccionada en mayusculas
    */
   private static String getOptionFromUser(Menu menu) {
@@ -112,7 +112,23 @@ public class Router {
     }
     ViewCreator.waitEnter();
   }
+
+  /**
+   * Muestra al usuario la lista de los clientes en el sistema y le pide el ID del que desea
+   * eliminar. A continuación intenta eliminarlo de la base de datos.
+   */
   private static void deleteClient() {
-    DB_CONTROLLER.removeClient("1234");
+    String consoleInput = "";
+    ViewCreator.pintarTabla(DB_CONTROLLER.getClients());
+    consoleInput = ViewCreator.pedirEntradaTexto(
+        "Introduzca el código del cliente que desea eliminar:");
+    if (DB_CONTROLLER.removeClient(consoleInput)) {
+      ViewCreator.mostrarExito(
+          "Los datos del cliente con el código " + consoleInput + " se han eliminado");
+    } else {
+      ViewCreator.mostrarError(
+          "Se ha producido un error al intentar borrar los datos del cliente " + consoleInput);
+    }
+    ViewCreator.waitEnter();
   }
 }

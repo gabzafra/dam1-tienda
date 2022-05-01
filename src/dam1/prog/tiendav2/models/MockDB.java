@@ -62,9 +62,8 @@ public class MockDB {
   }
 
   /**
-   * Dados los datos de un nuevo cliente lo añade a la tabla de clientes
-   * proporcionándole un nuevo id único. Si no puede añadirlo devuelve
-   * un Cliente con id = -1
+   * Dados los datos de un nuevo cliente lo añade a la tabla de clientes proporcionándole un nuevo
+   * id único. Si no puede añadirlo devuelve un Cliente con id = -1
    *
    * @param newClient nuevo cliente
    * @return el Cliente con su nuevo id o id a -1 si hay error
@@ -87,8 +86,7 @@ public class MockDB {
   }
 
   /**
-   * Dado un código ID de un cliente intenta eliminar su registro
-   * de la table clientsTable.
+   * Dado un código ID de un cliente intenta eliminar su registro de la table clientsTable.
    *
    * @param clientId id del registro a eliminar
    * @return true si se eliminó false si no

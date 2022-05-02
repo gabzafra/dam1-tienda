@@ -88,8 +88,22 @@ public class DbController {
     return db.getAllModels();
   }
 
+  /**
+   * Intenta añadir un nuevo modelo de zapato a la base de datos. Devuelve true si el proceso tiene
+   * éxito y false si ya hay un zapato con esa descripción o si hay un error al intentar modificar
+   * la base de datos
+   *
+   * @param newShoe nuevo model de zapato
+   * @return true si se consigue añadir, false si hay algún problema
+   */
   public boolean addShoeModel(ShoeModel newShoe) {
-    return true;
+    boolean modelExists = Arrays.stream(db.getAllModels())
+        .anyMatch(model -> model.getDescription().equals(newShoe.getDescription()));
+    if (modelExists) {
+      return false;
+    } else {
+      return db.add(newShoe).getID() > 0;
+    }
   }
 
   public boolean removeShoeModel() {

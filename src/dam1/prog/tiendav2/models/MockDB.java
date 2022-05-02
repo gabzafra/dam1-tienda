@@ -48,6 +48,8 @@ public class MockDB {
     };
   }
 
+  //READ
+
   public Order[] getAllOrders() {
     return ordersTable;
   }
@@ -59,6 +61,8 @@ public class MockDB {
   public Client[] getAllClients() {
     return clientsTable;
   }
+
+  //CREATE
 
   /**
    * Dados los datos de un nuevo cliente lo añade a la tabla de clientes proporcionándole un nuevo
@@ -131,6 +135,8 @@ public class MockDB {
     }
     return ordersTable[ordersTable.length - 1];
   }
+
+  //DELETE
 
   /**
    * Dado un código ID de un cliente intenta eliminar en cascada su registro de la tabla

@@ -51,6 +51,7 @@ public class Router {
               ViewCreator.pintarTabla(DB_CONTROLLER.getStock());
               ViewCreator.waitEnter();
             }
+            case "2" -> addNewModel();
             case "9" -> currentMenu = Menu.MENU_PRINCIPAL;
             case "0" -> selectedOption =
                 ViewCreator.pedirConfirmacion("¿Desea salir? s/n:") ? "0" : "";
@@ -80,6 +81,13 @@ public class Router {
       }
       ViewCreator.mostrarError("La opción seleccionada no es válida");
     } while (true);
+
+  }
+
+  /**
+   * Pide al usuario los datos de un nuevo modelo de zapato e intenta añadirlo al sistema
+   */
+  private static void addNewModel(){
 
   }
 

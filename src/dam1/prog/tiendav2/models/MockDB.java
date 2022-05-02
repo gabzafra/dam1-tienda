@@ -148,7 +148,7 @@ public class MockDB {
    */
   public ShoeModel updateModel(ShoeModel newModel) {
     modelsTable = Arrays.stream(modelsTable)
-        .map(model -> model.getID() != newModel.getID() ? newModel : model)
+        .map(model -> model.getID() == newModel.getID() ? newModel : model)
         .toArray(ShoeModel[]::new);
     return Arrays.stream(modelsTable).filter(model -> model.getID() == newModel.getID()).findFirst()
         .orElse(new ShoeModel());

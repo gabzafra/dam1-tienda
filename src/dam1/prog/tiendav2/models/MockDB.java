@@ -48,20 +48,6 @@ public class MockDB {
     };
   }
 
-  //READ
-
-  public Order[] getAllOrders() {
-    return ordersTable;
-  }
-
-  public ShoeModel[] getAllModels() {
-    return modelsTable;
-  }
-
-  public Client[] getAllClients() {
-    return clientsTable;
-  }
-
   //CREATE
 
   /**
@@ -135,6 +121,22 @@ public class MockDB {
     }
     return ordersTable[ordersTable.length - 1];
   }
+
+  //READ
+
+  public Order[] getAllOrders() {
+    return ordersTable;
+  }
+
+  public ShoeModel[] getAllModels() {
+    return modelsTable;
+  }
+
+  public Client[] getAllClients() {
+    return clientsTable;
+  }
+
+  //UPDATE
 
   //DELETE
 

@@ -106,8 +106,18 @@ public class DbController {
     }
   }
 
-  public boolean removeShoeModel() {
-    return true;
+  /**
+   * Intenta eliminar un modelo de zapato de la base de datos
+   *
+   * @param modelId código Id del modelo
+   * @return true si se elimina con éxito, false si no
+   */
+  public boolean removeShoeModel(String modelId) {
+    try {
+      return db.deleteModel(Integer.parseInt(modelId));
+    } catch (Exception e) {
+      return false;
+    }
   }
 
   public boolean increaseModelUnits() {

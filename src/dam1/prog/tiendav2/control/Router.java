@@ -54,6 +54,7 @@ public class Router {
               ViewCreator.waitEnter();
             }
             case "2" -> addNewModel();
+            case "3" -> deleteModel();
             case "9" -> currentMenu = Menu.MENU_PRINCIPAL;
             case "0" -> selectedOption =
                 ViewCreator.pedirConfirmacion("¿Desea salir? s/n:") ? "0" : "";
@@ -149,6 +150,25 @@ public class Router {
           + " se ha añadido con éxito");
     } else {
       ViewCreator.mostrarError("Se ha producido un error al intentar añadir al cliente");
+    }
+    ViewCreator.waitEnter();
+  }
+
+  /**
+   * Muestra al usuario la lista de los modelos en stock y le pide el ID del que desea
+   * eliminar. A continuación intenta eliminarlo de la base de datos.
+   */
+  private static void deleteModel(){
+    String consoleInput = "";
+    ViewCreator.pintarTabla(DB_CONTROLLER.getStock());
+    consoleInput = ViewCreator.pedirEntradaTexto(
+        "Introduzca el código del modelo que desea eliminar:");
+    if (DB_CONTROLLER.removeShoeModel(consoleInput)) {
+      ViewCreator.mostrarExito(
+          "Los datos del modelo con el código " + consoleInput + " se han eliminado");
+    } else {
+      ViewCreator.mostrarError(
+          "Se ha producido un error al intentar borrar los datos del modelo " + consoleInput);
     }
     ViewCreator.waitEnter();
   }

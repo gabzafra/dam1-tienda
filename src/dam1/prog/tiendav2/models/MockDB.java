@@ -138,6 +138,22 @@ public class MockDB {
 
   //UPDATE
 
+  /**
+   * Dado un objeto modelo con los datos actualizados. Realiza la actualización de la tabla
+   * modelsTable. Si tiene éxito devuelve el modelo con los datos nuevos. Si falla un modelo por
+   * defecto con el ID = -1
+   *
+   * @param newModel modelo con los datos actualizados
+   * @return el modelo actualizado o si falla un modelo por defecto con ID = -1
+   */
+  public ShoeModel updateModel(ShoeModel newModel) {
+    modelsTable = Arrays.stream(modelsTable)
+        .map(model -> model.getID() != newModel.getID() ? newModel : model)
+        .toArray(ShoeModel[]::new);
+    return Arrays.stream(modelsTable).filter(model -> model.getID() == newModel.getID()).findFirst()
+        .orElse(new ShoeModel());
+  }
+
   //DELETE
 
   /**

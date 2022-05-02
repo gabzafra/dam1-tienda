@@ -1,8 +1,10 @@
 package dam1.prog.tiendav2.control;
 
+import dam1.prog.tiendav2.Utils;
 import dam1.prog.tiendav2.models.Client;
 import dam1.prog.tiendav2.models.Menu;
 import dam1.prog.tiendav2.models.MenuItem;
+import dam1.prog.tiendav2.models.ShoeModel;
 import dam1.prog.tiendav2.view.ViewCreator;
 
 public class Router {
@@ -87,8 +89,38 @@ public class Router {
   /**
    * Pide al usuario los datos de un nuevo modelo de zapato e intenta añadirlo al sistema
    */
-  private static void addNewModel(){
+  private static void addNewModel() {
+    ViewCreator.mostraMensaje("Por favor introduzca los datos del nuevo modelo de zapato:");
+    ShoeModel zapato = new ShoeModel();
+    zapato.setDescription(ViewCreator.pedirEntradaTexto("Descripción:"));
+    zapato.setStyle(ViewCreator.pedirEntradaTexto("Estilo:"));
+    String consoleInput = "";
 
+    boolean isValidInput = false;
+    while (!isValidInput) {
+      consoleInput = ViewCreator.pedirEntradaTexto("Precio:");
+      isValidInput = Utils.isDoubleString(consoleInput);
+      if (isValidInput) {
+        double price = Double.parseDouble(consoleInput);
+        if (price > 0) {
+          zapato.setPrice(Double.parseDouble(consoleInput));
+        } else {
+          ViewCreator.mostrarError("El número debe ser mayor que 0");
+          isValidInput = false;
+        }
+      } else {
+        ViewCreator.mostrarError(
+            "Debe introducir un número mayor que 0");
+      }
+    }
+
+    if (DB_CONTROLLER.addShoeModel(zapato)) {
+      ViewCreator.mostrarExito("El nuevo modelo de zapato se ha añadido al inventario con éxito");
+    } else {
+      ViewCreator.mostrarError(
+          "Se ha producido un error al intentar añadir el nuevo modelo de zapato.");
+    }
+    ViewCreator.waitEnter();
   }
 
   /**
@@ -112,7 +144,7 @@ public class Router {
     newClient.setDiscount(
         ViewCreator.pedirConfirmacion("¿El cliente " + consoleInput + " tiene descuento? s/n"));
 
-    if (Router.DB_CONTROLLER.addNewClient(newClient)) {
+    if (DB_CONTROLLER.addNewClient(newClient)) {
       ViewCreator.mostrarExito("El cliente " + newClient.getFullName()
           + " se ha añadido con éxito");
     } else {

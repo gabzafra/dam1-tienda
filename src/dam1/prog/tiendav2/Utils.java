@@ -13,9 +13,24 @@ public class Utils {
    * @param number cadena con un entero
    * @return true si puede convertirse, false si no
    */
-  static boolean isIntString(String number) {
+  public static boolean isIntString(String number) {
     try {
       Integer.parseInt(number);
+    } catch (NumberFormatException e) {
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * Dada una cadena comprueba si puede convertirse en double
+   *
+   * @param number cadena con un double
+   * @return true si puede convertirse, false si no
+   */
+  public static boolean isDoubleString(String number) {
+    try {
+      Double.parseDouble(number);
     } catch (NumberFormatException e) {
       return false;
     }

@@ -2,6 +2,7 @@ package dam1.prog.tiendav2.control;
 
 import dam1.prog.tiendav2.models.Client;
 import dam1.prog.tiendav2.models.MockDB;
+import dam1.prog.tiendav2.models.Shoe;
 import dam1.prog.tiendav2.models.ShoeModel;
 import java.util.Arrays;
 
@@ -87,7 +88,7 @@ public class DbController {
     return db.getAllModels();
   }
 
-  public boolean addShoeModel() {
+  public boolean addShoeModel(ShoeModel newShoe) {
     return true;
   }
 

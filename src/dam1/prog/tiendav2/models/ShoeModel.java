@@ -8,6 +8,10 @@ public class ShoeModel {
   private double price;
   private int availableUnits;
 
+  public ShoeModel() {
+    this(-1, "", "", -1);
+  }
+
   public ShoeModel(int ID, String description, String style, double price) {
     this(ID, description, style, 0, price);
   }

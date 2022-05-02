@@ -155,10 +155,10 @@ public class Router {
   }
 
   /**
-   * Muestra al usuario la lista de los modelos en stock y le pide el ID del que desea
-   * eliminar. A continuación intenta eliminarlo de la base de datos.
+   * Muestra al usuario la lista de los modelos en stock y le pide el ID del que desea eliminar.
+   * A continuación intenta eliminarlo de la base de datos.
    */
-  private static void deleteModel(){
+  private static void deleteModel() {
     String consoleInput = "";
     ViewCreator.pintarTabla(DB_CONTROLLER.getStock());
     consoleInput = ViewCreator.pedirEntradaTexto(

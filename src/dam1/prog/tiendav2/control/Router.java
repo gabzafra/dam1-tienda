@@ -33,6 +33,11 @@ public class Router {
             }
           }
         }
+        case MENU_PEDIDOS -> {
+          Client clienteActual = identificarCliente();
+          //TODO Si el cliente tiene ID -1 pregunta si quiere crear un cliente nuevo y lo manda al menu de clientes
+          //TODO Si el cliente tiene ID > 0 crea un nuevo pedido
+        }
         case MENU_CLIENTES -> {
           switch (selectedOption) {
             case "1" -> {
@@ -66,6 +71,14 @@ public class Router {
         }
       }
     } while (!selectedOption.equalsIgnoreCase("0"));
+  }
+
+  private static Client identificarCliente() {
+    //TODO muestra al usuario la tabla de clientes.
+    //TODO Le pide un ID de cliente.
+    //TODO Si el cliente esta en la tabla de clientes lo devuelve
+    //TODO Si no devuelve un cliente con ID -1
+    return new Client();
   }
 
   /**

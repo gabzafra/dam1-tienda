@@ -154,6 +154,14 @@ public class MockDB {
         .orElse(new ShoeModel());
   }
 
+  public Order updateOrder(ShoeModel newOrder) {
+    ordersTable = Arrays.stream(ordersTable)
+        .map(order -> order.getID() == newOrder.getID() ? newOrder : order)
+        .toArray(Order[]::new);
+    return Arrays.stream(ordersTable).filter(model -> model.getID() == newOrder.getID()).findFirst()
+        .orElse(new Order());
+  }
+
   //DELETE
 
   /**

@@ -7,6 +7,10 @@ public class Order {
   private String status;
   private Shoe[] productList;
 
+  public Order(){
+    this(-1,-1,"");
+  }
+
   public Order(int ID, int ownerID, String status) {
     this.ID = ID;
     this.ownerID = ownerID;

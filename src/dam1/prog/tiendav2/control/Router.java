@@ -6,6 +6,7 @@ import dam1.prog.tiendav2.models.Menu;
 import dam1.prog.tiendav2.models.MenuItem;
 import dam1.prog.tiendav2.models.ShoeModel;
 import dam1.prog.tiendav2.view.ViewCreator;
+import java.util.Arrays;
 
 public class Router {
 
@@ -55,6 +56,7 @@ public class Router {
             }
             case "2" -> addNewModel();
             case "3" -> deleteModel();
+            case "4" -> modifyStock();
             case "9" -> currentMenu = Menu.MENU_PRINCIPAL;
             case "0" -> selectedOption =
                 ViewCreator.pedirConfirmacion("¿Desea salir? s/n:") ? "0" : "";
@@ -155,8 +157,8 @@ public class Router {
   }
 
   /**
-   * Muestra al usuario la lista de los modelos en stock y le pide el ID del que desea eliminar.
-   * A continuación intenta eliminarlo de la base de datos.
+   * Muestra al usuario la lista de los modelos en stock y le pide el ID del que desea eliminar. A
+   * continuación intenta eliminarlo de la base de datos.
    */
   private static void deleteModel() {
     String consoleInput = "";
@@ -190,5 +192,61 @@ public class Router {
           "Se ha producido un error al intentar borrar los datos del cliente " + consoleInput);
     }
     ViewCreator.waitEnter();
+  }
+
+  private static void modifyStock() {
+    String entradaUsuario = "";
+    boolean esValido = false;
+    //Pintar inventario
+    ShoeModel[] inventario = DB_CONTROLLER.getStock();
+    ViewCreator.pintarTabla(inventario);
+    //Pedir un ID
+    int id = -1;
+    while (!esValido) {
+      entradaUsuario = ViewCreator.pedirEntradaTexto(
+          "Introduzca el ID del modelo que quiere modificar:");
+      if (Utils.isIntString(entradaUsuario)) {
+        id = Integer.parseInt(entradaUsuario);
+        esValido = true;
+      } else {
+        ViewCreator.mostrarError("Debe introducir un ID valido. Los ID son enteros mayores de 0.");
+      }
+    }
+    //Obtener el objeto ShoeModel con ese id, o uno con id -1 si no está
+    int finalID = id; //Cuidado hecha final de forma efectiva para la exp. Lambda
+    ShoeModel modeloSeleccionado = Arrays.stream(inventario)
+        .filter(modelo -> modelo.getID() == finalID)
+        .findFirst().orElse(new ShoeModel());
+
+    //Comprobar si el modelo existe
+    if (modeloSeleccionado.getID() > 0) {
+      ViewCreator.pintarTabla(new ShoeModel[]{modeloSeleccionado});
+      esValido = false;
+      ViewCreator.mostraMensaje(
+          "El modelo seleccionado tiene " + modeloSeleccionado.getAvailableUnits() + " en stock.");
+      //Pedir el nuevo número de unidades de ese modelo
+      while (!esValido) {
+        entradaUsuario = ViewCreator.pedirEntradaTexto(
+            "Introduzca el nuevo número de unidades:");
+        if (Utils.isIntString(entradaUsuario)) {
+          modeloSeleccionado.setAvailableUnits(Integer.parseInt(entradaUsuario));
+          esValido = true;
+        } else {
+          ViewCreator.mostrarError("El nuevo número de unidades debe ser 0 o un entero positivo.");
+        }
+      }
+      //Usar el controlador para actualizar la bd
+      modeloSeleccionado = DB_CONTROLLER.updateShoeModel(modeloSeleccionado);
+      //Comprobar si actualizo con exito
+      if (modeloSeleccionado.getID() > 0) {
+        ViewCreator.mostrarExito("La cantidad de unidades en stock se ha modificado con éxito.");
+      } else {
+        ViewCreator.mostrarError("Ha ocurrido un error al intentar modificar la base de datos");
+      }
+
+    //Si el ID no coincide con ningun modelo de la bd
+    } else {
+      ViewCreator.mostrarError("No hay ningún modelo con ese ID");
+    }
   }
 }

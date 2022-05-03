@@ -1,5 +1,6 @@
 package dam1.prog.tiendav2.control;
 
+import dam1.prog.tiendav2.Utils;
 import dam1.prog.tiendav2.models.Client;
 import dam1.prog.tiendav2.models.MockDB;
 import dam1.prog.tiendav2.models.Shoe;
@@ -105,6 +106,18 @@ public class DbController {
       return db.add(newShoe).getID() > 0;
     }
   }
+
+  /**
+   * Dado un objeto ShoeModel con los nuevos valores intenta modificar su registro en la base de
+   * datos
+   *
+   * @param modelo con los valores actualizado
+   * @return modelo ya actualizado o un modelo con ID -1 si hubo un error
+   */
+  public ShoeModel updateShoeModel(ShoeModel modelo) {
+    return db.updateModel(modelo);
+  }
+
 
   /**
    * Intenta eliminar un modelo de zapato de la base de datos

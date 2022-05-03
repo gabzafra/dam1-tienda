@@ -194,6 +194,11 @@ public class Router {
     ViewCreator.waitEnter();
   }
 
+  /**
+   * Muestra al usuario el inventario. Y le pide el ID del modelo del cual quiere modificar el
+   * número de artículos en stock. A continuación le solicita el nuevo número de artículos y luego
+   * intenta actualizar el inventario en la base de datos.
+   */
   private static void modifyStock() {
     String entradaUsuario = "";
     boolean esValido = false;
@@ -244,7 +249,7 @@ public class Router {
         ViewCreator.mostrarError("Ha ocurrido un error al intentar modificar la base de datos");
       }
 
-    //Si el ID no coincide con ningun modelo de la bd
+      //Si el ID no coincide con ningun modelo de la bd
     } else {
       ViewCreator.mostrarError("No hay ningún modelo con ese ID");
     }

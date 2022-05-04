@@ -139,7 +139,17 @@ public class Router {
         ShoeModel modeloElegido = Arrays.stream(stockDisponible)
             .filter(modelo -> modelo.getID() == id).findFirst().orElse(new ShoeModel());
         if (modeloElegido.getID() > 0) {
-          buscarZapato(currentOrder, modeloElegido);
+          Shoe zapato = buscarZapato(currentOrder, modeloElegido);
+          if(zapato.getModelId() < 0){
+            zapato.setModelId(modeloElegido.getID());
+            currentOrder.getProductList().add(zapato);
+            ViewCreator.mostrarExito("Se ha añadido una unidad del zapato modelo " + modeloElegido.getDescription() + " al pedido.");
+            esValido = true;
+          }else {
+            if(modeloElegido.getAvailableUnits() > zapato.getDesiredUnits()){
+              zapato.setDesiredUnits(zapato.getDesiredUnits() + 1);
+            }
+          }
         } else {
           ViewCreator.mostrarError("Debe introducir un código de un modelo que tenga stock.");
         }

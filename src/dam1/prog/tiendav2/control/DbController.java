@@ -3,6 +3,7 @@ package dam1.prog.tiendav2.control;
 import dam1.prog.tiendav2.Utils;
 import dam1.prog.tiendav2.models.Client;
 import dam1.prog.tiendav2.models.MockDB;
+import dam1.prog.tiendav2.models.Order;
 import dam1.prog.tiendav2.models.Shoe;
 import dam1.prog.tiendav2.models.ShoeModel;
 import java.util.Arrays;
@@ -16,8 +17,9 @@ public class DbController {
   }
 
   //Gestión de pedidos
-  public boolean createOrder() {
-    return true;
+  public Order createOrder(int clientId ) {
+    Order order = new Order(clientId, "OPEN");
+    return db.add(order);
   }
 
   public boolean cancelOrder() {

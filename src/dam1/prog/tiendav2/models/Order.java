@@ -8,14 +8,11 @@ public class Order {
   private Shoe[] productList;
 
   public Order(){
-    this(-1,-1,"");
+    this(-1,"");
   }
 
-  public Order(int ID, int ownerID, String status) {
-    this.ID = ID;
-    this.ownerID = ownerID;
-    this.status = status;
-    this.productList = new Shoe[0];
+  public Order(int ownerID, String status) {
+    this(-1,ownerID,status,new Shoe[]{});
   }
 
   public Order(int ID, int ownerID, String status, Shoe[] productList) {

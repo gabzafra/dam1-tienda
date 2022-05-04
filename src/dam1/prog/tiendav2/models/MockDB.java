@@ -117,7 +117,7 @@ public class MockDB {
       newOrder.setID(newId);
       ordersTable[ordersTable.length - 1] = newOrder;
     } catch (Exception e) {
-      return new Order(-1, 0, "");
+      return new Order(0, "");
     }
     return ordersTable[ordersTable.length - 1];
   }

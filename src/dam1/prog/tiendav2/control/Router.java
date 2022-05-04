@@ -4,6 +4,7 @@ import dam1.prog.tiendav2.Utils;
 import dam1.prog.tiendav2.models.Client;
 import dam1.prog.tiendav2.models.Menu;
 import dam1.prog.tiendav2.models.MenuItem;
+import dam1.prog.tiendav2.models.Order;
 import dam1.prog.tiendav2.models.ShoeModel;
 import dam1.prog.tiendav2.view.ViewCreator;
 import java.util.Arrays;
@@ -15,10 +16,27 @@ public class Router {
   public static void main(String[] args) {
 
     Menu currentMenu = Menu.MENU_PRINCIPAL;
+    Order currentOrder = new Order();
 
     String selectedOption;
 
     do {
+
+      if (currentMenu == Menu.MENU_PEDIDOS && currentOrder.getID() < 0) {
+        Client currentClient = identificarCliente();
+        if(currentClient.getID() < 0){
+          currentMenu = Menu.MENU_CLIENTES;
+        }else {
+          currentOrder = DB_CONTROLLER.createOrder(currentClient.getID());
+          if(currentOrder.getID() < 0){
+            ViewCreator.mostrarError("Ha ocurrido un error al crear el pedido en la base de datos");
+            currentMenu = Menu.MENU_PRINCIPAL;
+          } else {
+            ViewCreator.mostrarExito("Se ha creado un nuevo pedido para el cliente " + currentClient.getFullName());
+          }
+        }
+      }
+
       selectedOption = getOptionFromUser(currentMenu);
 
       switch (currentMenu) {
@@ -34,9 +52,7 @@ public class Router {
           }
         }
         case MENU_PEDIDOS -> {
-          Client clienteActual = identificarCliente();
-          //TODO Si el cliente tiene ID -1 pregunta si quiere crear un cliente nuevo y lo manda al menu de clientes
-          //TODO Si el cliente tiene ID > 0 crea un nuevo pedido
+
         }
         case MENU_CLIENTES -> {
           switch (selectedOption) {
@@ -74,11 +90,29 @@ public class Router {
   }
 
   private static Client identificarCliente() {
-    //TODO muestra al usuario la tabla de clientes.
-    //TODO Le pide un ID de cliente.
-    //TODO Si el cliente esta en la tabla de clientes lo devuelve
-    //TODO Si no devuelve un cliente con ID -1
-    return new Client();
+    ViewCreator.pintarTabla(DB_CONTROLLER.getClients());
+    Client cliente = new Client();
+
+    String entradaUsuario;
+    while (true) {
+      entradaUsuario = ViewCreator.pedirEntradaTexto(
+          "Por favor introduzca el código del cliente o NUEVO si desea dar de alta a un cliente nuevo");
+      if (entradaUsuario.equalsIgnoreCase("NUEVO")) {
+        return cliente;
+      }
+      if (Utils.isIntString(entradaUsuario)) {
+        int id = Integer.parseInt(entradaUsuario);
+        cliente = Arrays.stream(DB_CONTROLLER.getClients()).filter(row -> row.getID() == id)
+            .findFirst().orElse(new Client());
+        if (cliente.getID() > 0) {
+          return cliente;
+        } else {
+          ViewCreator.mostrarError("El código introducido no coincide con el de ningún cliente.");
+        }
+      } else {
+        ViewCreator.mostrarError("Debe introducir un código valido o NUEVO. Los códigos son enteros mayores de 0.");
+      }
+    }
   }
 
   /**

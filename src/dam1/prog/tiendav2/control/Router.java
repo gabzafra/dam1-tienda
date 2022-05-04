@@ -56,7 +56,14 @@ public class Router {
           }
         }
         case MENU_PEDIDOS -> {
-
+          switch (selectedOption) {
+            case "1" -> addProduct();
+            case "2" -> removeProduct();
+            case "3" -> realizarPago();
+            case "4" -> cancelOrder();
+            default -> {
+            }
+          }
         }
         case MENU_CLIENTES -> {
           switch (selectedOption) {
@@ -91,6 +98,35 @@ public class Router {
         }
       }
     } while (!selectedOption.equalsIgnoreCase("0"));
+  }
+
+  private static void cancelOrder() {
+    /*TODO confirma que se quiere cancelar el pedido
+     *  - si se confirma actualiza el estado del pedido a CANCELADO, se reinicia el pedido actual
+     *  y volvemos al menu principal*/
+  }
+
+  private static void realizarPago() {
+    /*TODO muestra la factura del pedido actual
+     *  confirma si se desea completar el pago
+     *  - si confirma se actualiza el estado del pedido a PAGADO, se reinicia el pedido actual
+     *  y volvemos al menu PRINCIPAL.
+     *  - si no se confirma volvemos al menu de PEDIDOS*/
+  }
+
+  private static void removeProduct() {
+    /*TODO muestra los zapatos que hay en el pedido actual
+     *  pide al usuario el código del modelo de zapato que quiere eliminar
+     *  elimina uno de los zapatos de ese modelo del pedido actual*/
+  }
+
+  private static void addProduct() {
+    /*TODO muestra el listado de modelos de zapato con unidades disponibles
+     *  pide al usuario el código del modelo de zapato que quiere añadir al pedido
+     *  mira que en el pedido no haya más zapatos que las unidades disponibles en stock
+     *  añade un nuevo zapato al pedido actual
+     * */
+
   }
 
   /**
@@ -156,7 +192,7 @@ public class Router {
     ShoeModel zapato = new ShoeModel();
     zapato.setDescription(ViewCreator.pedirEntradaTexto("Descripción:"));
     zapato.setStyle(ViewCreator.pedirEntradaTexto("Estilo:"));
-    String consoleInput = "";
+    String consoleInput;
 
     boolean isValidInput = false;
     while (!isValidInput) {
@@ -220,7 +256,7 @@ public class Router {
    * continuación intenta eliminarlo de la base de datos.
    */
   private static void deleteModel() {
-    String consoleInput = "";
+    String consoleInput;
     ViewCreator.pintarTabla(DB_CONTROLLER.getStock());
     consoleInput = ViewCreator.pedirEntradaTexto(
         "Introduzca el código del modelo que desea eliminar:");
@@ -239,7 +275,7 @@ public class Router {
    * eliminar. A continuación intenta eliminarlo de la base de datos.
    */
   private static void deleteClient() {
-    String consoleInput = "";
+    String consoleInput;
     ViewCreator.pintarTabla(DB_CONTROLLER.getClients());
     consoleInput = ViewCreator.pedirEntradaTexto(
         "Introduzca el código del cliente que desea eliminar:");
@@ -259,7 +295,7 @@ public class Router {
    * intenta actualizar el inventario en la base de datos.
    */
   private static void modifyStock() {
-    String entradaUsuario = "";
+    String entradaUsuario;
     boolean esValido = false;
     //Pintar inventario
     ShoeModel[] inventario = DB_CONTROLLER.getStock();

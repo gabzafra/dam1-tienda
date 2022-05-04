@@ -5,6 +5,7 @@ import dam1.prog.tiendav2.models.Client;
 import dam1.prog.tiendav2.models.Menu;
 import dam1.prog.tiendav2.models.MenuItem;
 import dam1.prog.tiendav2.models.Order;
+import dam1.prog.tiendav2.models.Shoe;
 import dam1.prog.tiendav2.models.ShoeModel;
 import dam1.prog.tiendav2.view.ViewCreator;
 import java.util.Arrays;
@@ -57,7 +58,7 @@ public class Router {
         }
         case MENU_PEDIDOS -> {
           switch (selectedOption) {
-            case "1" -> addProduct();
+            case "1" -> addProduct(currentOrder);
             case "2" -> removeProduct();
             case "3" -> realizarPago();
             case "4" -> cancelOrder();
@@ -120,13 +121,48 @@ public class Router {
      *  elimina uno de los zapatos de ese modelo del pedido actual*/
   }
 
-  private static void addProduct() {
+  private static void addProduct(Order currentOrder) {
     /*TODO muestra el listado de modelos de zapato con unidades disponibles
      *  pide al usuario el código del modelo de zapato que quiere añadir al pedido
      *  mira que en el pedido no haya más zapatos que las unidades disponibles en stock
      *  añade un nuevo zapato al pedido actual
      * */
+    ShoeModel[] stockDisponible = Arrays.stream(DB_CONTROLLER.getStock())
+        .filter(modelo -> modelo.getAvailableUnits() > 0).toArray(ShoeModel[]::new);
+    ViewCreator.pintarTabla(stockDisponible);
+    boolean esValido = false;
+    while (!esValido) {
+      String entradaUsuario = ViewCreator.pedirEntradaTexto(
+          "Introduzca el código del modelo de zapato que quiere añadir al pedido:");
+      if (Utils.isIntString(entradaUsuario)) {
+        int id = Integer.parseInt(entradaUsuario);
+        ShoeModel modeloElegido = Arrays.stream(stockDisponible)
+            .filter(modelo -> modelo.getID() == id).findFirst().orElse(new ShoeModel());
+        if (modeloElegido.getID() > 0) {
+          buscarZapato(currentOrder, modeloElegido);
+        } else {
+          ViewCreator.mostrarError("Debe introducir un código de un modelo que tenga stock.");
+        }
+      } else {
+        ViewCreator.mostrarError(
+            "Debe introducir un código valido. Los códigos son enteros mayores de 0.");
+      }
+    }
 
+  }
+
+  /**
+   * Busca en la lista de productos de un pedido un modelo de zapato. Si lo encuentra devuelve ese
+   * zapato de la lista, si no devuelve un zapato nuevo con modelID = -1
+   *
+   * @param order pedido en el que buscar el modelo de zapato
+   * @param modeloBuscado
+   * @return si se encuentra el modelo se devuelve el Shoe con ese id si no un Shoe con ID -1
+   */
+  private static Shoe buscarZapato(Order order, ShoeModel modeloBuscado) {
+    return order.getProductList().stream()
+        .filter(model -> model.getModelId() == modeloBuscado.getID()).findFirst()
+        .orElse(new Shoe());
   }
 
   /**

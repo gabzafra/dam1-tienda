@@ -1,21 +1,23 @@
 package dam1.prog.tiendav2.models;
 
+import java.util.ArrayList;
+
 public class Order {
 
   private int ID;
   private int ownerID;
   private String status;
-  private Shoe[] productList;
+  private ArrayList<Shoe> productList;
 
   public Order(){
     this(-1,"");
   }
 
   public Order(int ownerID, String status) {
-    this(-1,ownerID,status,new Shoe[]{});
+    this(-1,ownerID,status, new ArrayList<Shoe>());
   }
 
-  public Order(int ID, int ownerID, String status, Shoe[] productList) {
+  public Order(int ID, int ownerID, String status, ArrayList<Shoe> productList) {
     this.ID = ID;
     this.ownerID = ownerID;
     this.status = status;
@@ -46,11 +48,11 @@ public class Order {
     this.status = status;
   }
 
-  public Shoe[] getProductList() {
+  public ArrayList<Shoe> getProductList() {
     return productList;
   }
 
-  public void setProductList(Shoe[] productList) {
+  public void setProductList(ArrayList<Shoe> productList) {
     this.productList = productList;
   }
 }

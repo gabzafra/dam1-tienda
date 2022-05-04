@@ -1,8 +1,11 @@
 package dam1.prog.tiendav2.models;
 
 
+import dam1.prog.login06.Usuario;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 
 public class MockDB {
 
@@ -20,17 +23,37 @@ public class MockDB {
         new Client(6, "Fiona", true),
     };
     this.ordersTable = new Order[]{
-        new Order(1, 3, "completed", new Shoe[]{new Shoe(2, 1)}),
-        new Order(2, 5, "completed", new Shoe[]{
-            new Shoe(7, 1),
-            new Shoe(10, 1),
-            new Shoe(11, 1)
-        }),
-        new Order(3, 2, "completed", new Shoe[]{new Shoe(1, 2)}),
-        new Order(4, 1, "completed", new Shoe[]{
-            new Shoe(4, 1),
-            new Shoe(11, 3)
-        })
+        new Order(1, 3, "PAGADO",
+            new ArrayList<>(
+                List.of(
+                    new Shoe(3, 2)
+                )
+            )
+        ),
+        new Order(2, 5, "PAGADO",
+            new ArrayList<>(
+                List.of(
+                    new Shoe(3, 1),
+                    new Shoe(2, 1),
+                    new Shoe(7, 4)
+                )
+            )
+        ),
+        new Order(3, 2, "PAGADO",
+            new ArrayList<>(
+                List.of(
+                    new Shoe(1, 1)
+                )
+            )
+        ),
+        new Order(4, 1, "CANCELADO",
+            new ArrayList<>(
+                List.of(
+                    new Shoe(3, 1),
+                    new Shoe(11, 2)
+                )
+            )
+        )
     };
     this.modelsTable = new ShoeModel[]{
         new ShoeModel(1, "CLARKS 88127", "De Vestir", 3, 79.95),

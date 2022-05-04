@@ -26,8 +26,10 @@ public class Router {
       if (currentMenu == Menu.MENU_PEDIDOS && currentOrder.getID() < 0) {
         currentClient = identificarCliente();
         if (currentClient.getID() < 0) {
+          //Caso de cliente nuevo
           currentMenu = Menu.MENU_CLIENTES;
         } else {
+          //Crear nuevo pedido
           currentOrder = DB_CONTROLLER.createOrder(currentClient.getID());
           if (currentOrder.getID() < 0) {
             ViewCreator.mostrarError("Ha ocurrido un error al crear el pedido en la base de datos");
@@ -93,9 +95,8 @@ public class Router {
 
   /**
    * Muestra al usuario los clientes que hay en el sistema. Le pide que proporcione el código id de
-   * uno de ellos o si desea crear uno nuevo.
-   * Si desea crear uno nuevo devuelve un Client con ID = -1.
-   * Si no devuelve el Client con ese ID.
+   * uno de ellos o si desea crear uno nuevo. Si desea crear uno nuevo devuelve un Client con ID =
+   * -1. Si no devuelve el Client con ese ID.
    *
    * @return un Client con ID -1 si se desea crear uno nuevo o el Client con ese ID de la bd
    */

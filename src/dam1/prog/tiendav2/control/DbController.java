@@ -15,9 +15,16 @@ public class DbController {
   public DbController() {
     this.db = new MockDB();
   }
-
   //Gestión de pedidos
-  public Order createOrder(int clientId ) {
+
+  /**
+   * Intenta crear un nuevo pedido de un cliente. El nuevo pedido tendrá como id del propietario el
+   * id por parámetro y su estado inicial será OPEN.
+   *
+   * @param clientId propietario del nuevo pedido
+   * @return nueva Order o Order con ID -1 si hubo error en la bd
+   */
+  public Order createOrder(int clientId) {
     Order order = new Order(clientId, "OPEN");
     return db.add(order);
   }

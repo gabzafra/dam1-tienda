@@ -121,6 +121,15 @@ public class Router {
      *  elimina uno de los zapatos de ese modelo del pedido actual*/
   }
 
+  /**
+   * Muestra al usuario el listado de productos que tienen stock, y le pide que
+   * introduzca el código del modelo de zapato que quiere añadir una unidad
+   * más al pedido. Si hay suficientes unidades de ese modelo en el inventario
+   * incrementa las unidades deseadas de ese modelo en 1.
+   * Finalmente muestra el estado actual del pedido al usuario.
+   *
+   * @param currentOrder pedido de zapatos actual
+   */
   private static void addProduct(Order currentOrder) {
     ShoeModel[] stockDisponible = Arrays.stream(DB_CONTROLLER.getStock())
         .filter(modelo -> modelo.getAvailableUnits() > 0).toArray(ShoeModel[]::new);

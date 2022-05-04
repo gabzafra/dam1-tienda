@@ -17,22 +17,24 @@ public class Router {
 
     Menu currentMenu = Menu.MENU_PRINCIPAL;
     Order currentOrder = new Order();
+    Client currentClient;
 
     String selectedOption;
 
     do {
-
+      //Controlar si es un pedido nuevo
       if (currentMenu == Menu.MENU_PEDIDOS && currentOrder.getID() < 0) {
-        Client currentClient = identificarCliente();
-        if(currentClient.getID() < 0){
+        currentClient = identificarCliente();
+        if (currentClient.getID() < 0) {
           currentMenu = Menu.MENU_CLIENTES;
-        }else {
+        } else {
           currentOrder = DB_CONTROLLER.createOrder(currentClient.getID());
-          if(currentOrder.getID() < 0){
+          if (currentOrder.getID() < 0) {
             ViewCreator.mostrarError("Ha ocurrido un error al crear el pedido en la base de datos");
             currentMenu = Menu.MENU_PRINCIPAL;
           } else {
-            ViewCreator.mostrarExito("Se ha creado un nuevo pedido para el cliente " + currentClient.getFullName());
+            ViewCreator.mostrarExito(
+                "Se ha creado un nuevo pedido para el cliente " + currentClient.getFullName());
           }
         }
       }
@@ -89,6 +91,14 @@ public class Router {
     } while (!selectedOption.equalsIgnoreCase("0"));
   }
 
+  /**
+   * Muestra al usuario los clientes que hay en el sistema. Le pide que proporcione el código id de
+   * uno de ellos o si desea crear uno nuevo.
+   * Si desea crear uno nuevo devuelve un Client con ID = -1.
+   * Si no devuelve el Client con ese ID.
+   *
+   * @return un Client con ID -1 si se desea crear uno nuevo o el Client con ese ID de la bd
+   */
   private static Client identificarCliente() {
     ViewCreator.pintarTabla(DB_CONTROLLER.getClients());
     Client cliente = new Client();
@@ -110,7 +120,8 @@ public class Router {
           ViewCreator.mostrarError("El código introducido no coincide con el de ningún cliente.");
         }
       } else {
-        ViewCreator.mostrarError("Debe introducir un código valido o NUEVO. Los códigos son enteros mayores de 0.");
+        ViewCreator.mostrarError(
+            "Debe introducir un código valido o NUEVO. Los códigos son enteros mayores de 0.");
       }
     }
   }

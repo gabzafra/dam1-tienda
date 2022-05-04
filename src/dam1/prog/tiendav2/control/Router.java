@@ -122,11 +122,6 @@ public class Router {
   }
 
   private static void addProduct(Order currentOrder) {
-    /*TODO muestra el listado de modelos de zapato con unidades disponibles
-     *  pide al usuario el código del modelo de zapato que quiere añadir al pedido
-     *  mira que en el pedido no haya más zapatos que las unidades disponibles en stock
-     *  añade un nuevo zapato al pedido actual
-     * */
     ShoeModel[] stockDisponible = Arrays.stream(DB_CONTROLLER.getStock())
         .filter(modelo -> modelo.getAvailableUnits() > 0).toArray(ShoeModel[]::new);
     ViewCreator.pintarTabla(stockDisponible);
@@ -140,14 +135,23 @@ public class Router {
             .filter(modelo -> modelo.getID() == id).findFirst().orElse(new ShoeModel());
         if (modeloElegido.getID() > 0) {
           Shoe zapato = buscarZapato(currentOrder, modeloElegido);
-          if(zapato.getModelId() < 0){
+          if (zapato.getModelId() < 0) {
             zapato.setModelId(modeloElegido.getID());
             currentOrder.getProductList().add(zapato);
-            ViewCreator.mostrarExito("Se ha añadido una unidad del zapato modelo " + modeloElegido.getDescription() + " al pedido.");
+            ViewCreator.mostrarExito(
+                "Se ha añadido una unidad del zapato modelo " + modeloElegido.getDescription()
+                    + " al pedido.");
             esValido = true;
-          }else {
-            if(modeloElegido.getAvailableUnits() > zapato.getDesiredUnits()){
+          } else {
+            if (modeloElegido.getAvailableUnits() > zapato.getDesiredUnits()) {
               zapato.setDesiredUnits(zapato.getDesiredUnits() + 1);
+              ViewCreator.mostrarExito(
+                  "Se ha añadido una unidad del zapato modelo " + modeloElegido.getDescription()
+                      + " al pedido.");
+              esValido = true;
+            } else {
+              ViewCreator.mostrarError("No se ha podido añadir otra unidad del zapato modelo "
+                  + modeloElegido.getDescription() + " al pedido, no hay stock suficiente");
             }
           }
         } else {
@@ -165,7 +169,7 @@ public class Router {
    * Busca en la lista de productos de un pedido un modelo de zapato. Si lo encuentra devuelve ese
    * zapato de la lista, si no devuelve un zapato nuevo con modelID = -1
    *
-   * @param order pedido en el que buscar el modelo de zapato
+   * @param order         pedido en el que buscar el modelo de zapato
    * @param modeloBuscado
    * @return si se encuentra el modelo se devuelve el Shoe con ese id si no un Shoe con ID -1
    */

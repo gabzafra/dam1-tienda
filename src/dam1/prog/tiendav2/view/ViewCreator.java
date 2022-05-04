@@ -4,6 +4,8 @@ import dam1.prog.tiendav2.Utils;
 import dam1.prog.tiendav2.models.Client;
 import dam1.prog.tiendav2.models.Menu;
 import dam1.prog.tiendav2.models.MenuItem;
+import dam1.prog.tiendav2.models.Order;
+import dam1.prog.tiendav2.models.Shoe;
 import dam1.prog.tiendav2.models.ShoeModel;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -11,6 +13,22 @@ import java.util.Scanner;
 public class ViewCreator {
 
   private static final Scanner INPUT = new Scanner(System.in);
+
+  public static void pintarTabla(Order pedido, ShoeModel[] inventario) {
+    ShoeModel[] rows = new ShoeModel[]{};
+    for (Shoe zapato : pedido.getProductList()) {
+      rows = Arrays.copyOf(rows, rows.length + 1);
+      rows[rows.length - 1] = Arrays.stream(inventario)
+          .filter(model -> model.getID() == zapato.getModelId())
+          .findFirst()
+          .map(model -> new ShoeModel(model.getID(), model.getDescription(), model.getStyle(),
+              zapato.getDesiredUnits(),
+              model.getPrice())).get();
+    }
+    System.out.println("+--------+------------+----------------------+----------+-----------+");
+    System.out.println("********************* RESUMEN DEL PEDIDO ****************************");
+    pintarTabla(rows);
+  }
 
   /**
    * Dado un array de los modelos del inventario imprime una tabla formateada de sus valores

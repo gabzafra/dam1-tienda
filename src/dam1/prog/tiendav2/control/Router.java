@@ -162,7 +162,8 @@ public class Router {
             "Debe introducir un código valido. Los códigos son enteros mayores de 0.");
       }
     }
-
+    ViewCreator.pintarTabla(currentOrder, stockDisponible);
+    ViewCreator.waitEnter();
   }
 
   /**

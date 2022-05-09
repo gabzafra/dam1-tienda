@@ -60,7 +60,7 @@ public class Router {
           switch (selectedOption) {
             case "1" -> addProduct(currentOrder);
             case "2" -> removeProduct(currentOrder);
-            case "3" -> realizarPago();
+            case "3" -> realizarPago(currentOrder);
             case "4" -> {
               currentOrder = cancelOrder(currentOrder);
               if (currentOrder.getStatus().equals("CANCELLED")) {
@@ -132,12 +132,16 @@ public class Router {
     }
   }
 
-  private static void realizarPago() {
-    /*TODO muestra la factura del pedido actual
-     *  confirma si se desea completar el pago
-     *  - si confirma se actualiza el estado del pedido a PAID, se reinicia el pedido actual
-     *  y volvemos al menu PRINCIPAL.
-     *  - si no se confirma volvemos al menu de PEDIDOS*/
+  private static void realizarPago(Order currentOrder) {
+    if(currentOrder.getProductList().size() > 0){
+      /*TODO muestra la factura del pedido actual
+       *  confirma si se desea completar el pago
+       *  - si confirma se actualiza el estado del pedido a PAID, se reinicia el pedido actual
+       *  y volvemos al menu PRINCIPAL.
+       *  - si no se confirma volvemos al menu de PEDIDOS*/
+    }else {
+      ViewCreator.mostrarError("El pedido no tiene aun productos.");
+    }
   }
 
   /**

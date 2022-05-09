@@ -140,6 +140,14 @@ public class Router {
      *  - si no se confirma volvemos al menu de PEDIDOS*/
   }
 
+  /**
+   * Muestra al usuario el listado de productos que tiene en su pedido, y le pide que introduzca el
+   * código del modelo de zapato del que quiere una unidad menos. Intenta reducir el numero de
+   * unidades deseadas de ese modelo en una y en caso de solo haber una unidad en pedido se quita el
+   * modelo del pedido. Finalmente muestra el estado actual del pedido al usuario.
+   *
+   * @param currentOrder pedido de zapatos actual
+   */
   private static void removeProduct(Order currentOrder) {
     if (currentOrder.getProductList().size() < 1) {
       ViewCreator.mostrarError("El pedido debe contener algún producto.");

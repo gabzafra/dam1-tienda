@@ -29,8 +29,10 @@ public class DbController {
     return db.add(order);
   }
 
-  public boolean cancelOrder() {
-    return true;
+  public Order cancelOrder(Order newOrder) {
+    Order order = new Order(newOrder.getID(), newOrder.getOwnerID(), "CANCELLED",
+        newOrder.getProductList());
+    return db.updateOrder(order);
   }
 
   public boolean addShoeToOrder() {

@@ -145,6 +145,24 @@ public class MockDB {
     return ordersTable[ordersTable.length - 1];
   }
 
+  /**
+   * Dado un objeto Order con los datos actualizados. Realiza la actualización de la tabla
+   * ordersTable. Si tiene éxito devuelve el pedido con los datos nuevos. Si falla un pedido por
+   * defecto con el ID = -1
+   *
+   * @param newOrder pedido con los datos actualizados
+   * @return el pedido actualizado o si falla un pedido por defecto con ID = -1
+   */
+  public Order updateOrder(Order newOrder) {
+    ordersTable = Arrays.stream(ordersTable)
+        .map(order -> order.getID() == newOrder.getID() ? newOrder : order)
+        .toArray(Order[]::new);
+    return Arrays.stream(ordersTable)
+        .filter(order -> order.getID() == newOrder.getID())
+        .findFirst()
+        .orElse(new Order());
+  }
+
   //READ
 
   public Order[] getAllOrders() {
@@ -177,13 +195,13 @@ public class MockDB {
         .orElse(new ShoeModel());
   }
 
-  public Order updateOrder(ShoeModel newOrder) {
-    ordersTable = Arrays.stream(ordersTable)
-        .map(order -> order.getID() == newOrder.getID() ? newOrder : order)
-        .toArray(Order[]::new);
-    return Arrays.stream(ordersTable).filter(model -> model.getID() == newOrder.getID()).findFirst()
-        .orElse(new Order());
-  }
+//  public Order updateOrder(ShoeModel newOrder) {
+//    ordersTable = Arrays.stream(ordersTable)
+//        .map(order -> order.getID() == newOrder.getID() ? newOrder : order)
+//        .toArray(Order[]::new);
+//    return Arrays.stream(ordersTable).filter(model -> model.getID() == newOrder.getID()).findFirst()
+//        .orElse(new Order());
+//  }
 
   //DELETE
 

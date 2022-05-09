@@ -61,7 +61,13 @@ public class Router {
             case "1" -> addProduct(currentOrder);
             case "2" -> removeProduct();
             case "3" -> realizarPago();
-            case "4" -> cancelOrder();
+            case "4" -> {
+              currentOrder = cancelOrder(currentOrder);
+              if (currentOrder.getStatus().equals("CANCELLED")) {
+                currentOrder = new Order();
+                currentMenu = Menu.MENU_PRINCIPAL;
+              }
+            }
             default -> {
             }
           }
@@ -101,16 +107,26 @@ public class Router {
     } while (!selectedOption.equalsIgnoreCase("0"));
   }
 
-  private static void cancelOrder() {
-    /*TODO confirma que se quiere cancelar el pedido
-     *  - si se confirma actualiza el estado del pedido a CANCELADO, se reinicia el pedido actual
-     *  y volvemos al menu principal*/
+  private static Order cancelOrder(Order currentOrder) {
+    if (ViewCreator.pedirConfirmacion(
+        "¿Está seguro de que desea cancelar el pedido actual? s/n :")) {
+      Order newOrder = DB_CONTROLLER.cancelOrder(currentOrder);
+      if (newOrder.getID() > 0) {
+        ViewCreator.mostrarExito("Se ha cancelado el pedido actual.");
+        return newOrder;
+      } else {
+        ViewCreator.mostrarError("Se ha producido un error al intentar cancelar el pedido actual");
+        return currentOrder;
+      }
+    } else {
+      return currentOrder;
+    }
   }
 
   private static void realizarPago() {
     /*TODO muestra la factura del pedido actual
      *  confirma si se desea completar el pago
-     *  - si confirma se actualiza el estado del pedido a PAGADO, se reinicia el pedido actual
+     *  - si confirma se actualiza el estado del pedido a PAID, se reinicia el pedido actual
      *  y volvemos al menu PRINCIPAL.
      *  - si no se confirma volvemos al menu de PEDIDOS*/
   }
@@ -122,11 +138,10 @@ public class Router {
   }
 
   /**
-   * Muestra al usuario el listado de productos que tienen stock, y le pide que
-   * introduzca el código del modelo de zapato que quiere añadir una unidad
-   * más al pedido. Si hay suficientes unidades de ese modelo en el inventario
-   * incrementa las unidades deseadas de ese modelo en 1.
-   * Finalmente muestra el estado actual del pedido al usuario.
+   * Muestra al usuario el listado de productos que tienen stock, y le pide que introduzca el código
+   * del modelo de zapato que quiere añadir una unidad al pedido. Si hay suficientes unidades de ese
+   * modelo en el inventario incrementa las unidades deseadas de ese modelo en 1. Finalmente muestra
+   * el estado actual del pedido al usuario.
    *
    * @param currentOrder pedido de zapatos actual
    */
@@ -180,7 +195,7 @@ public class Router {
    * zapato de la lista, si no devuelve un zapato nuevo con modelID = -1
    *
    * @param order         pedido en el que buscar el modelo de zapato
-   * @param modeloBuscado
+   * @param modeloBuscado modelo del zapato buscado
    * @return si se encuentra el modelo se devuelve el Shoe con ese id si no un Shoe con ID -1
    */
   private static Shoe buscarZapato(Order order, ShoeModel modeloBuscado) {

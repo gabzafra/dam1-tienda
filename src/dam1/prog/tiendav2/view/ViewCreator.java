@@ -122,7 +122,7 @@ public class ViewCreator {
     System.out.printf(twoColFormat, "Subtotal:", precioTotal);
     if (descuento < 1) {
       System.out.printf(twoColFormat, "Descuento:", precioTotal * descuento);
-      precioTotal += precioTotal * descuento;
+      precioTotal -= precioTotal * descuento;
       System.out.printf(twoColFormat, "Precio con descuento:", precioTotal);
     }
     System.out.printf(twoColFormat, "IVA:", precioTotal * iva);

@@ -9,7 +9,6 @@ import dam1.prog.tiendav2.models.ShoeModel;
 import java.util.Arrays;
 
 public class DbController {
-
   private final MockDB db;
 
   public DbController() {

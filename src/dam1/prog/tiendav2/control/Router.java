@@ -13,6 +13,8 @@ import java.util.Arrays;
 public class Router {
 
   private static final DbController DB_CONTROLLER = new DbController();
+  private static final double GANANCIA = 1.55;
+  private static final double IVA = 0.21;
 
   public static void main(String[] args) {
 
@@ -335,7 +337,7 @@ public class Router {
       consoleInput = ViewCreator.pedirEntradaTexto("Precio:");
       isValidInput = Utils.isDoubleString(consoleInput);
       if (isValidInput) {
-        double price = Double.parseDouble(consoleInput);
+        double price = Double.parseDouble(consoleInput) * GANANCIA;
         if (price > 0) {
           zapato.setPrice(Double.parseDouble(consoleInput));
         } else {

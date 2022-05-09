@@ -13,14 +13,15 @@ import java.util.Arrays;
 public class Router {
 
   private static final DbController DB_CONTROLLER = new DbController();
-  private static final double GANANCIA = 1.55;
+  private static final double GANANCIA = 0.55;
   private static final double IVA = 0.21;
+  private static final double DESCUENTO = 0.08;
 
   public static void main(String[] args) {
 
     Menu currentMenu = Menu.MENU_PRINCIPAL;
     Order currentOrder = new Order();
-    Client currentClient;
+    Client currentClient = new Client();
 
     String selectedOption;
 
@@ -62,7 +63,7 @@ public class Router {
           switch (selectedOption) {
             case "1" -> addProduct(currentOrder);
             case "2" -> removeProduct(currentOrder);
-            case "3" -> realizarPago(currentOrder);
+            case "3" -> realizarPago(currentOrder, DB_CONTROLLER.getStock(), currentClient);
             case "4" -> {
               currentOrder = cancelOrder(currentOrder);
               if (currentOrder.getStatus().equals("CANCELLED")) {
@@ -134,14 +135,16 @@ public class Router {
     }
   }
 
-  private static void realizarPago(Order currentOrder) {
-    if(currentOrder.getProductList().size() > 0){
+  private static void realizarPago(Order currentOrder, ShoeModel[] inventario, Client client) {
+    if (currentOrder.getProductList().size() > 0) {
+      double descuento = client.hasDiscount() ? DESCUENTO : 1;
+      ViewCreator.pintarFactura(currentOrder, inventario, IVA, descuento);
       /*TODO muestra la factura del pedido actual
        *  confirma si se desea completar el pago
        *  - si confirma se actualiza el estado del pedido a PAID, se reinicia el pedido actual
        *  y volvemos al menu PRINCIPAL.
        *  - si no se confirma volvemos al menu de PEDIDOS*/
-    }else {
+    } else {
       ViewCreator.mostrarError("El pedido no tiene aun productos.");
     }
   }
@@ -194,10 +197,6 @@ public class Router {
       ViewCreator.pintarTabla(currentOrder, stockDisponible);
       ViewCreator.waitEnter();
     }
-
-    /*TODO
-     *  pide al usuario el código del modelo de zapato que quiere eliminar
-     *  elimina uno de los zapatos de ese modelo del pedido actual*/
   }
 
   /**
@@ -337,9 +336,10 @@ public class Router {
       consoleInput = ViewCreator.pedirEntradaTexto("Precio:");
       isValidInput = Utils.isDoubleString(consoleInput);
       if (isValidInput) {
-        double price = Double.parseDouble(consoleInput) * GANANCIA;
+        double price = Double.parseDouble(consoleInput);
         if (price > 0) {
-          zapato.setPrice(Double.parseDouble(consoleInput));
+          price += price * GANANCIA;
+          zapato.setPrice(price);
         } else {
           ViewCreator.mostrarError("El número debe ser mayor que 0");
           isValidInput = false;

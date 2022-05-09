@@ -7,6 +7,7 @@ import dam1.prog.tiendav2.models.MenuItem;
 import dam1.prog.tiendav2.models.Order;
 import dam1.prog.tiendav2.models.Shoe;
 import dam1.prog.tiendav2.models.ShoeModel;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -86,6 +87,49 @@ public class ViewCreator {
       System.out.println(option.getOptionNumber() + ". " + option.getOptionLabel());
     }
     System.out.println("---------------------------------------");
+  }
+
+  /**
+   * Imprime una factura de un pedido.
+   *
+   * @param order Pedido del cliente
+   * @param inventario inventario de la tienda
+   * @param iva impuestos
+   * @param descuento si lo tiene el cliente
+   */
+  public static void pintarFactura(Order order, ShoeModel[] inventario, double iva,
+      double descuento) {
+    String sixColFormat = "| %-6.6s | %-10.10s | %-20.20s | %8.8s | %8.8s€ | %12.12s€ |\n";
+    String twoColFormat = "| %-30.30s | %12.2f€ |\n";
+
+    System.out.println(
+        "+--------+------------+----------------------+----------+-----------+---------------+");
+    System.out.printf(sixColFormat, "Código", "Estilo", "Modelo", "Unidades", "Precio ",
+        "Precio Total ");
+    System.out.println(
+        "+--------+------------+----------------------+----------+-----------+---------------+");
+
+    double precioTotal = 0;
+    for (Shoe producto : order.getProductList()) {
+      ShoeModel modelo = Arrays.stream(inventario)
+          .filter(model -> model.getID() == producto.getModelId()).findFirst().get();
+      double precio = producto.getDesiredUnits() * modelo.getPrice();
+      precioTotal += precio;
+      System.out.printf(sixColFormat, modelo.getID(), modelo.getStyle(), modelo.getDescription(),
+          producto.getDesiredUnits(), modelo.getPrice(), precio);
+    }
+    System.out.println(
+        "+--------+------------+----------+-----------+---+------+-----------+---------------+");
+    System.out.printf(twoColFormat, "Subtotal:", precioTotal);
+    if (descuento < 1) {
+      System.out.printf(twoColFormat, "Descuento:", precioTotal * descuento);
+      precioTotal += precioTotal * descuento;
+      System.out.printf(twoColFormat, "Precio con descuento:", precioTotal);
+    }
+    System.out.printf(twoColFormat, "IVA:", precioTotal * iva);
+    precioTotal += precioTotal * iva;
+    System.out.printf(twoColFormat, "PRECIO FINAL:", precioTotal);
+    System.out.println("+--------------------------------+---------------+");
   }
 
   /**

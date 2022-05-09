@@ -107,6 +107,15 @@ public class Router {
     } while (!selectedOption.equalsIgnoreCase("0"));
   }
 
+  /**
+   * Pregunta al usuario si desea cancelar el pedido dado por parámetro. Si la respuesta es
+   * afirmativa cambia el estado de esta a "CANCELLED" y devuelve el objeto Order con la
+   * modificación. Si el usuario cancela o no se puede modificar el estado del pedido. Informa al
+   * usuarió del error y devuelve el mismo objeto Order que se pasó por parámetros.
+   *
+   * @param currentOrder pedido actual
+   * @return si se cancela un Order con el estado "CANCELLED" si no el mismo Order
+   */
   private static Order cancelOrder(Order currentOrder) {
     if (ViewCreator.pedirConfirmacion(
         "¿Está seguro de que desea cancelar el pedido actual? s/n :")) {

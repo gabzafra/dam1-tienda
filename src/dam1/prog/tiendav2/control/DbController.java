@@ -19,7 +19,7 @@ public class DbController {
 
   /**
    * Intenta crear un nuevo pedido de un cliente. El nuevo pedido tendrá como id del propietario el
-   * id por parámetro y su estado inicial será OPEN.
+   * id dado por parámetro y su estado inicial será OPEN.
    *
    * @param clientId propietario del nuevo pedido
    * @return nueva Order o Order con ID -1 si hubo error en la bd
@@ -29,6 +29,14 @@ public class DbController {
     return db.add(order);
   }
 
+  /**
+   * Intenta modificar un pedido con los datos proporcionados del Order proporcionado por
+   * parámetros. Si lo consigue devuelve el objeto Order con los datos actualizados, si no un Order
+   * con ID -1.
+   *
+   * @param newOrder Order con los nuevos datos
+   * @return Order con los datos actualizados o Order con ID -1 si hubo error en la bd
+   */
   public Order cancelOrder(Order newOrder) {
     Order order = new Order(newOrder.getID(), newOrder.getOwnerID(), "CANCELLED",
         newOrder.getProductList());

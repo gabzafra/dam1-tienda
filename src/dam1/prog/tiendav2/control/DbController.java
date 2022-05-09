@@ -1,6 +1,5 @@
 package dam1.prog.tiendav2.control;
 
-import dam1.prog.tiendav2.Utils;
 import dam1.prog.tiendav2.models.Client;
 import dam1.prog.tiendav2.models.MockDB;
 import dam1.prog.tiendav2.models.Order;
@@ -9,6 +8,7 @@ import dam1.prog.tiendav2.models.ShoeModel;
 import java.util.Arrays;
 
 public class DbController {
+
   private final MockDB db;
 
   public DbController() {
@@ -29,6 +29,15 @@ public class DbController {
   }
 
   /**
+   * Intenta actualizar una orden del sistema
+   *
+   * @param order Orden con los datos actualizados
+   */
+  public void updateOrder(Order order) {
+    db.updateOrder(order);
+  }
+
+  /**
    * Intenta modificar un pedido con los datos proporcionados del Order proporcionado por
    * parámetros. Si lo consigue devuelve el objeto Order con los datos actualizados, si no un Order
    * con ID -1.
@@ -42,16 +51,19 @@ public class DbController {
     return db.updateOrder(order);
   }
 
-  public boolean addShoeToOrder() {
-    return true;
-  }
-
-  public boolean removeShoeFromOrder() {
-    return true;
-  }
-
-  public boolean closeAnOrder() {
-    return true;
+  /**
+   * Dado un pedido pagado. Reduce las unidades correspondientes a los modelos del pedido que hay en
+   * inventario.
+   *
+   * @param order pedido que se quiere cerrar
+   */
+  public void closeAnOrder(Order order) {
+    for (Shoe shoe : order.getProductList()) {
+      ShoeModel model = getShoeModelByID(shoe.getModelId());
+      if (model.getID() > 0) {
+        model.setAvailableUnits(model.getAvailableUnits() - shoe.getDesiredUnits());
+      }
+    }
   }
 
   //Gestión de clientes
@@ -108,6 +120,18 @@ public class DbController {
   }
 
   /**
+   * Dado un ID busca en la base de datos un modelo que coincida y lo devuelve, si no lo encuentra
+   * devuelve un ShoeModel con ID = -1
+   *
+   * @param id código del modelo
+   * @return El modelo de zapato con ese código o un modelo con el código a -1
+   */
+  public ShoeModel getShoeModelByID(int id) {
+    return Arrays.stream(db.getAllModels()).filter(model -> model.getID() == id).findFirst()
+        .orElse(new ShoeModel());
+  }
+
+  /**
    * Intenta añadir un nuevo modelo de zapato a la base de datos. Devuelve true si el proceso tiene
    * éxito y false si ya hay un zapato con esa descripción o si hay un error al intentar modificar
    * la base de datos
@@ -150,13 +174,4 @@ public class DbController {
       return false;
     }
   }
-
-  public boolean increaseModelUnits() {
-    return true;
-  }
-
-  public boolean decreaseModelUnits() {
-    return true;
-  }
-
 }

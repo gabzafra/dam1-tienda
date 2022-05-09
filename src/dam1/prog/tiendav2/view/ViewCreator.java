@@ -7,7 +7,6 @@ import dam1.prog.tiendav2.models.MenuItem;
 import dam1.prog.tiendav2.models.Order;
 import dam1.prog.tiendav2.models.Shoe;
 import dam1.prog.tiendav2.models.ShoeModel;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 

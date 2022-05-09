@@ -63,7 +63,12 @@ public class Router {
           switch (selectedOption) {
             case "1" -> addProduct(currentOrder);
             case "2" -> removeProduct(currentOrder);
-            case "3" -> realizarPago(currentOrder, DB_CONTROLLER.getStock(), currentClient);
+            case "3" -> {
+              if (realizarPago(currentOrder, currentClient)) {
+                currentOrder = new Order();
+                currentMenu = Menu.MENU_PRINCIPAL;
+              }
+            }
             case "4" -> {
               currentOrder = cancelOrder(currentOrder);
               if (currentOrder.getStatus().equals("CANCELLED")) {
@@ -135,17 +140,32 @@ public class Router {
     }
   }
 
-  private static void realizarPago(Order currentOrder, ShoeModel[] inventario, Client client) {
+  /**
+   * Dado un pedido intenta ralizar el pago del mismo, si se consigue devuelve true si no false
+   *
+   * @param currentOrder pedido ha pagar
+   * @param client       que hace el pedido
+   * @return true si se paga con exito, false si no
+   */
+  private static boolean realizarPago(Order currentOrder, Client client) {
     if (currentOrder.getProductList().size() > 0) {
       double descuento = client.hasDiscount() ? DESCUENTO : 1;
-      ViewCreator.pintarFactura(currentOrder, inventario, IVA, descuento);
-      /*TODO muestra la factura del pedido actual
-       *  confirma si se desea completar el pago
-       *  - si confirma se actualiza el estado del pedido a PAID, se reinicia el pedido actual
-       *  y volvemos al menu PRINCIPAL.
-       *  - si no se confirma volvemos al menu de PEDIDOS*/
+      ViewCreator.pintarFactura(currentOrder, DB_CONTROLLER.getStock(), IVA, descuento);
+      if (ViewCreator.pedirConfirmacion("¿Desea realizar el pago? s/n")) {
+        //Esto debería tener una validación desde la bdd
+        currentOrder.setStatus("PAID");
+        DB_CONTROLLER.updateOrder(currentOrder);
+        DB_CONTROLLER.closeAnOrder(currentOrder);
+        ViewCreator.mostrarExito("Se ha realizado el pago con exito.");
+        ViewCreator.waitEnter();
+        return true;
+      } else {
+        ViewCreator.mostrarError("Se ha cancelado el pago del pedido");
+        return false;
+      }
     } else {
       ViewCreator.mostrarError("El pedido no tiene aun productos.");
+      return false;
     }
   }
 

@@ -1,7 +1,5 @@
 package dam1.prog.tiendav2.models;
 
-
-import dam1.prog.login06.Usuario;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -165,10 +163,6 @@ public class MockDB {
 
   //READ
 
-  public Order[] getAllOrders() {
-    return ordersTable;
-  }
-
   public ShoeModel[] getAllModels() {
     return modelsTable;
   }
@@ -195,14 +189,6 @@ public class MockDB {
         .orElse(new ShoeModel());
   }
 
-//  public Order updateOrder(ShoeModel newOrder) {
-//    ordersTable = Arrays.stream(ordersTable)
-//        .map(order -> order.getID() == newOrder.getID() ? newOrder : order)
-//        .toArray(Order[]::new);
-//    return Arrays.stream(ordersTable).filter(model -> model.getID() == newOrder.getID()).findFirst()
-//        .orElse(new Order());
-//  }
-
   //DELETE
 
   /**
@@ -222,19 +208,6 @@ public class MockDB {
         .toArray(Client[]::new);
 
     return clientsTable.length < initialAmtClients;
-  }
-
-  /**
-   * Dado un código ID de un pedido intenta eliminar su registro de la tabla orderTable.
-   *
-   * @param orderID id del registro a eliminar
-   * @return true si se eliminó false si no
-   */
-  public boolean deleteOrder(int orderID) {
-    int initialAmtOrders = ordersTable.length;
-    ordersTable = Arrays.stream(ordersTable).filter(order -> order.getID() != orderID)
-        .toArray(Order[]::new);
-    return ordersTable.length < initialAmtOrders;
   }
 
   /**

@@ -14,7 +14,7 @@ public class Order {
   }
 
   public Order(int ownerID, String status) {
-    this(-1,ownerID,status, new ArrayList<Shoe>());
+    this(-1,ownerID,status, new ArrayList<>());
   }
 
   public Order(int ID, int ownerID, String status, ArrayList<Shoe> productList) {

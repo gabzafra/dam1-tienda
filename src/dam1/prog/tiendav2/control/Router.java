@@ -59,7 +59,7 @@ public class Router {
         case MENU_PEDIDOS -> {
           switch (selectedOption) {
             case "1" -> addProduct(currentOrder);
-            case "2" -> removeProduct();
+            case "2" -> removeProduct(currentOrder);
             case "3" -> realizarPago();
             case "4" -> {
               currentOrder = cancelOrder(currentOrder);
@@ -140,8 +140,48 @@ public class Router {
      *  - si no se confirma volvemos al menu de PEDIDOS*/
   }
 
-  private static void removeProduct() {
-    /*TODO muestra los zapatos que hay en el pedido actual
+  private static void removeProduct(Order currentOrder) {
+    if (currentOrder.getProductList().size() < 1) {
+      ViewCreator.mostrarError("El pedido debe contener algún producto.");
+    } else {
+      ShoeModel[] stockDisponible = Arrays.stream(DB_CONTROLLER.getStock())
+          .filter(modelo -> modelo.getAvailableUnits() > 0).toArray(ShoeModel[]::new);
+      ViewCreator.pintarTabla(currentOrder, stockDisponible);
+      boolean esValido = false;
+      while (!esValido) {
+        String entradaUsuario = ViewCreator.pedirEntradaTexto(
+            "Introduzca el código del modelo de zapato del cual quiere eliminar una unidad del pedido:");
+        if (Utils.isIntString(entradaUsuario)) {
+          int id = Integer.parseInt(entradaUsuario);
+          ShoeModel modeloElegido = Arrays.stream(stockDisponible)
+              .filter(modelo -> modelo.getID() == id).findFirst().orElse(new ShoeModel());
+          if (modeloElegido.getID() > 0) {
+            Shoe zapato = buscarZapato(currentOrder, modeloElegido);
+            if (zapato.getModelId() > 0) {
+              if (zapato.getDesiredUnits() > 1) {
+                zapato.setDesiredUnits(zapato.getDesiredUnits() - 1);
+              } else {
+                currentOrder.getProductList().remove(zapato);
+              }
+              ViewCreator.mostrarExito(
+                  "Se ha eliminado una unidad del zapato modelo " + modeloElegido.getDescription()
+                      + " del pedido.");
+              esValido = true;
+            }
+          } else {
+            ViewCreator.mostrarError(
+                "Debe introducir un código de un modelo que tenga en su pedido.");
+          }
+        } else {
+          ViewCreator.mostrarError(
+              "Debe introducir un código valido. Los códigos son enteros mayores de 0.");
+        }
+      }
+      ViewCreator.pintarTabla(currentOrder, stockDisponible);
+      ViewCreator.waitEnter();
+    }
+
+    /*TODO
      *  pide al usuario el código del modelo de zapato que quiere eliminar
      *  elimina uno de los zapatos de ese modelo del pedido actual*/
   }

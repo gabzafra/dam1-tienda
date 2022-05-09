@@ -49,7 +49,7 @@ public class ViewCreator {
       });
       System.out.println("+--------+------------+----------------------+----------+-----------+");
     } else {
-      System.out.println(Utils.COLOR_RED + "No hay productos en el inventario" + Utils.COLOR_WHITE);
+      System.out.println(Utils.COLOR_RED + "No hay productos." + Utils.COLOR_WHITE);
     }
   }
 

@@ -14,6 +14,14 @@ public class ViewCreator {
 
   private static final Scanner INPUT = new Scanner(System.in);
 
+  //SALIDAS
+
+  /**
+   * Pinta por pantalla un resumen de un pedido del usuario.
+   *
+   * @param pedido pedido actual
+   * @param inventario inventario de la tienda
+   */
   public static void pintarTabla(Order pedido, ShoeModel[] inventario) {
     ShoeModel[] rows = new ShoeModel[]{};
     for (Shoe zapato : pedido.getProductList()) {
@@ -23,7 +31,8 @@ public class ViewCreator {
           .findFirst()
           .map(model -> new ShoeModel(model.getID(), model.getDescription(), model.getStyle(),
               zapato.getDesiredUnits(),
-              model.getPrice())).get();
+              model.getPrice()))
+          .get();
     }
     System.out.println("+--------+------------+----------------------+----------+-----------+");
     System.out.println("********************* RESUMEN DEL PEDIDO ****************************");
@@ -41,12 +50,12 @@ public class ViewCreator {
       System.out.println("+--------+------------+----------------------+----------+-----------+");
       System.out.printf(fiveColFormat, "Código", "Estilo", "Modelo", "", "Unidades", "", "Precio ");
       System.out.println("+--------+------------+----------------------+----------+-----------+");
-      Arrays.stream(rows).forEach(model -> {
-        String colored = model.getAvailableUnits() == 0 ? Utils.COLOR_RED : Utils.COLOR_GREEN;
-        System.out.printf(fiveColFormat, model.getID(), model.getStyle(), model.getDescription(),
-            colored,
-            model.getAvailableUnits(), Utils.COLOR_WHITE, model.getPrice());
-      });
+      Arrays.stream(rows)
+          .forEach(model -> {
+            String colored = model.getAvailableUnits() == 0 ? Utils.COLOR_RED : Utils.COLOR_GREEN;
+            System.out.printf(fiveColFormat, model.getID(), model.getStyle(), model.getDescription(),
+            colored, model.getAvailableUnits(), Utils.COLOR_WHITE, model.getPrice());
+            });
       System.out.println("+--------+------------+----------------------+----------+-----------+");
     } else {
       System.out.println(Utils.COLOR_RED + "No hay productos." + Utils.COLOR_WHITE);
@@ -101,6 +110,7 @@ public class ViewCreator {
     String sixColFormat = "| %-6.6s | %-10.10s | %-20.20s | %8.8s | %8.8s€ | %12.12s€ |\n";
     String twoColFormat = "| %-30.30s | %12.2f€ |\n";
 
+    //Pedido completo
     System.out.println(
         "+--------+------------+----------------------+----------+-----------+---------------+");
     System.out.printf(sixColFormat, "Código", "Estilo", "Modelo", "Unidades", "Precio ",
@@ -111,7 +121,9 @@ public class ViewCreator {
     double precioTotal = 0;
     for (Shoe producto : order.getProductList()) {
       ShoeModel modelo = Arrays.stream(inventario)
-          .filter(model -> model.getID() == producto.getModelId()).findFirst().get();
+          .filter(model -> model.getID() == producto.getModelId())
+          .findFirst()
+          .get();
       double precio = producto.getDesiredUnits() * modelo.getPrice();
       precioTotal += precio;
       System.out.printf(sixColFormat, modelo.getID(), modelo.getStyle(), modelo.getDescription(),
@@ -119,6 +131,7 @@ public class ViewCreator {
     }
     System.out.println(
         "+--------+------------+----------+-----------+---+------+-----------+---------------+");
+    //Totales
     System.out.printf(twoColFormat, "Subtotal:", precioTotal);
     if (descuento < 1) {
       System.out.printf(twoColFormat, "Descuento:", precioTotal * descuento);
@@ -130,6 +143,35 @@ public class ViewCreator {
     System.out.printf(twoColFormat, "PRECIO FINAL:", precioTotal);
     System.out.println("+--------------------------------+---------------+");
   }
+
+  /**
+   * Muestra en rojo un mensaje de error pasado por parámetro
+   *
+   * @param mensaje mensaje para el usuario
+   */
+  public static void mostrarError(String mensaje) {
+    System.out.println(Utils.COLOR_RED + mensaje + Utils.COLOR_WHITE);
+  }
+
+  /**
+   * Muestra en verde un mensaje de éxito pasado por parámetro
+   *
+   * @param mensaje mensaje para el usuario
+   */
+  public static void mostrarExito(String mensaje) {
+    System.out.println(Utils.COLOR_GREEN + mensaje + Utils.COLOR_WHITE);
+  }
+
+  /**
+   * Muestra en blanco un mensaje pasado por parámetro
+   *
+   * @param mensaje mensaje para el usuario
+   */
+  public static void mostraMensaje(String mensaje) {
+    System.out.println(mensaje);
+  }
+
+  //ENTRADAS
 
   /**
    * Muestra al usuario con un mensaje dado por parámetro y a continuación espera que la confirme
@@ -173,33 +215,6 @@ public class ViewCreator {
       }
     }
     return userInput;
-  }
-
-  /**
-   * Muestra en rojo un mensaje de error pasado por parámetro
-   *
-   * @param mensaje mensaje para el usuario
-   */
-  public static void mostrarError(String mensaje) {
-    System.out.println(Utils.COLOR_RED + mensaje + Utils.COLOR_WHITE);
-  }
-
-  /**
-   * Muestra en verde un mensaje de éxito pasado por parámetro
-   *
-   * @param mensaje mensaje para el usuario
-   */
-  public static void mostrarExito(String mensaje) {
-    System.out.println(Utils.COLOR_GREEN + mensaje + Utils.COLOR_WHITE);
-  }
-
-  /**
-   * Muestra en blanco un mensaje pasado por parámetro
-   *
-   * @param mensaje mensaje para el usuario
-   */
-  public static void mostraMensaje(String mensaje) {
-    System.out.println(mensaje);
   }
 
   /**

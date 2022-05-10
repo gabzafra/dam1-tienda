@@ -81,8 +81,10 @@ public class MockDB {
   public Client add(Client newClient) {
     int newId = 1;
     if (clientsTable.length > 0) {
-      newId = Arrays.stream(clientsTable).map(Client::getID)
-          .max(Comparator.naturalOrder()).get();
+      newId = Arrays.stream(clientsTable)
+          .map(Client::getID)
+          .max(Comparator.naturalOrder())
+          .get();
       newId++;
     }
     clientsTable = Arrays.copyOf(clientsTable, clientsTable.length + 1);
@@ -105,8 +107,10 @@ public class MockDB {
   public ShoeModel add(ShoeModel newModel) {
     int newId = 1;
     if (modelsTable.length > 0) {
-      newId = Arrays.stream(modelsTable).map(ShoeModel::getID)
-          .max(Comparator.naturalOrder()).get();
+      newId = Arrays.stream(modelsTable)
+          .map(ShoeModel::getID)
+          .max(Comparator.naturalOrder())
+          .get();
       newId++;
     }
     modelsTable = Arrays.copyOf(modelsTable, modelsTable.length + 1);
@@ -129,8 +133,10 @@ public class MockDB {
   public Order add(Order newOrder) {
     int newId = 1;
     if (ordersTable.length > 0) {
-      newId = Arrays.stream(ordersTable).map(Order::getID)
-          .max(Comparator.naturalOrder()).get();
+      newId = Arrays.stream(ordersTable)
+          .map(Order::getID)
+          .max(Comparator.naturalOrder())
+          .get();
       newId++;
     }
     ordersTable = Arrays.copyOf(ordersTable, ordersTable.length + 1);
@@ -155,6 +161,7 @@ public class MockDB {
     ordersTable = Arrays.stream(ordersTable)
         .map(order -> order.getID() == newOrder.getID() ? newOrder : order)
         .toArray(Order[]::new);
+
     return Arrays.stream(ordersTable)
         .filter(order -> order.getID() == newOrder.getID())
         .findFirst()
@@ -185,7 +192,10 @@ public class MockDB {
     modelsTable = Arrays.stream(modelsTable)
         .map(model -> model.getID() == newModel.getID() ? newModel : model)
         .toArray(ShoeModel[]::new);
-    return Arrays.stream(modelsTable).filter(model -> model.getID() == newModel.getID()).findFirst()
+
+    return Arrays.stream(modelsTable)
+        .filter(model -> model.getID() == newModel.getID())
+        .findFirst()
         .orElse(new ShoeModel());
   }
 
@@ -201,10 +211,12 @@ public class MockDB {
   public boolean deleteClient(int clientID) {
     int initialAmtClients = clientsTable.length;
 
-    ordersTable = Arrays.stream(ordersTable).filter(order -> order.getOwnerID() != clientID)
+    ordersTable = Arrays.stream(ordersTable)
+        .filter(order -> order.getOwnerID() != clientID)
         .toArray(Order[]::new);
 
-    clientsTable = Arrays.stream(clientsTable).filter(cliente -> cliente.getID() != clientID)
+    clientsTable = Arrays.stream(clientsTable)
+        .filter(cliente -> cliente.getID() != clientID)
         .toArray(Client[]::new);
 
     return clientsTable.length < initialAmtClients;
@@ -218,8 +230,10 @@ public class MockDB {
    */
   public boolean deleteModel(int modelID) {
     int initialAmtModels = modelsTable.length;
-    modelsTable = Arrays.stream(modelsTable).filter(model -> model.getID() != modelID)
+    modelsTable = Arrays.stream(modelsTable)
+        .filter(model -> model.getID() != modelID)
         .toArray(ShoeModel[]::new);
+
     return modelsTable.length < initialAmtModels;
   }
 }

@@ -14,6 +14,7 @@ public class DbController {
   public DbController() {
     this.db = new MockDB();
   }
+
   //Gestión de pedidos
 
   /**
@@ -127,7 +128,9 @@ public class DbController {
    * @return El modelo de zapato con ese código o un modelo con el código a -1
    */
   public ShoeModel getShoeModelByID(int id) {
-    return Arrays.stream(db.getAllModels()).filter(model -> model.getID() == id).findFirst()
+    return Arrays.stream(db.getAllModels())
+        .filter(model -> model.getID() == id)
+        .findFirst()
         .orElse(new ShoeModel());
   }
 

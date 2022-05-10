@@ -115,6 +115,30 @@ public class Router {
     } while (!selectedOption.equalsIgnoreCase("0"));
   }
 
+  //NAVEGACIÓN
+
+  /**
+   * Pide al usuario que elija una opción del menu y devuelve la opción seleccionada en mayúsculas
+   *
+   * @param menu menu donde esta el usuario
+   * @return opción seleccionada en mayusculas
+   */
+  private static String getOptionFromUser(Menu menu) {
+    String userInput;
+    do {
+      ViewCreator.pintarMenu(menu);
+      userInput = ViewCreator.pedirEntradaTexto("Por favor elija una opción del menú:");
+      for (MenuItem opcion : menu.getOptionList()) {
+        if (opcion.getOptionNumber().equalsIgnoreCase(userInput)) {
+          return userInput.toUpperCase();
+        }
+      }
+      ViewCreator.mostrarError("La opción seleccionada no es válida");
+    } while (true);
+  }
+
+  //PEDIDOS
+
   /**
    * Pregunta al usuario si desea cancelar el pedido dado por parámetro. Si la respuesta es
    * afirmativa cambia el estado de esta a "CANCELLED" y devuelve el objeto Order con la
@@ -141,11 +165,11 @@ public class Router {
   }
 
   /**
-   * Dado un pedido intenta ralizar el pago del mismo, si se consigue devuelve true si no false
+   * Dado un pedido intenta realizar el pago del mismo, si se consigue devuelve true si no false
    *
    * @param currentOrder pedido ha pagar
-   * @param client       que hace el pedido
-   * @return true si se paga con exito, false si no
+   * @param client       cliente que hace el pedido
+   * @return true si se paga con éxito, false si no
    */
   private static boolean realizarPago(Order currentOrder, Client client) {
     if (currentOrder.getProductList().size() > 0) {
@@ -156,7 +180,7 @@ public class Router {
         currentOrder.setStatus("PAID");
         DB_CONTROLLER.updateOrder(currentOrder);
         DB_CONTROLLER.closeAnOrder(currentOrder);
-        ViewCreator.mostrarExito("Se ha realizado el pago con exito.");
+        ViewCreator.mostrarExito("Se ha realizado el pago con éxito.");
         ViewCreator.waitEnter();
         return true;
       } else {
@@ -182,7 +206,8 @@ public class Router {
       ViewCreator.mostrarError("El pedido debe contener algún producto.");
     } else {
       ShoeModel[] stockDisponible = Arrays.stream(DB_CONTROLLER.getStock())
-          .filter(modelo -> modelo.getAvailableUnits() > 0).toArray(ShoeModel[]::new);
+          .filter(modelo -> modelo.getAvailableUnits() > 0)
+          .toArray(ShoeModel[]::new);
       ViewCreator.pintarTabla(currentOrder, stockDisponible);
       boolean esValido = false;
       while (!esValido) {
@@ -191,7 +216,9 @@ public class Router {
         if (Utils.isIntString(entradaUsuario)) {
           int id = Integer.parseInt(entradaUsuario);
           ShoeModel modeloElegido = Arrays.stream(stockDisponible)
-              .filter(modelo -> modelo.getID() == id).findFirst().orElse(new ShoeModel());
+              .filter(modelo -> modelo.getID() == id)
+              .findFirst()
+              .orElse(new ShoeModel());
           if (modeloElegido.getID() > 0) {
             Shoe zapato = buscarZapato(currentOrder, modeloElegido);
             if (zapato.getModelId() > 0) {
@@ -229,7 +256,8 @@ public class Router {
    */
   private static void addProduct(Order currentOrder) {
     ShoeModel[] stockDisponible = Arrays.stream(DB_CONTROLLER.getStock())
-        .filter(modelo -> modelo.getAvailableUnits() > 0).toArray(ShoeModel[]::new);
+        .filter(modelo -> modelo.getAvailableUnits() > 0)
+        .toArray(ShoeModel[]::new);
     ViewCreator.pintarTabla(stockDisponible);
     boolean esValido = false;
     while (!esValido) {
@@ -238,7 +266,9 @@ public class Router {
       if (Utils.isIntString(entradaUsuario)) {
         int id = Integer.parseInt(entradaUsuario);
         ShoeModel modeloElegido = Arrays.stream(stockDisponible)
-            .filter(modelo -> modelo.getID() == id).findFirst().orElse(new ShoeModel());
+            .filter(modelo -> modelo.getID() == id)
+            .findFirst()
+            .orElse(new ShoeModel());
         if (modeloElegido.getID() > 0) {
           Shoe zapato = buscarZapato(currentOrder, modeloElegido);
           if (zapato.getModelId() < 0) {
@@ -282,64 +312,12 @@ public class Router {
    */
   private static Shoe buscarZapato(Order order, ShoeModel modeloBuscado) {
     return order.getProductList().stream()
-        .filter(model -> model.getModelId() == modeloBuscado.getID()).findFirst()
+        .filter(model -> model.getModelId() == modeloBuscado.getID())
+        .findFirst()
         .orElse(new Shoe());
   }
 
-  /**
-   * Muestra al usuario los clientes que hay en el sistema. Le pide que proporcione el código id de
-   * uno de ellos o si desea crear uno nuevo. Si desea crear uno nuevo devuelve un Client con ID =
-   * -1. Si no devuelve el Client con ese ID.
-   *
-   * @return un Client con ID -1 si se desea crear uno nuevo o el Client con ese ID de la bd
-   */
-  private static Client identificarCliente() {
-    ViewCreator.pintarTabla(DB_CONTROLLER.getClients());
-    Client cliente = new Client();
-
-    String entradaUsuario;
-    while (true) {
-      entradaUsuario = ViewCreator.pedirEntradaTexto(
-          "Por favor introduzca el código del cliente o NUEVO si desea dar de alta a un cliente nuevo");
-      if (entradaUsuario.equalsIgnoreCase("NUEVO")) {
-        return cliente;
-      }
-      if (Utils.isIntString(entradaUsuario)) {
-        int id = Integer.parseInt(entradaUsuario);
-        cliente = Arrays.stream(DB_CONTROLLER.getClients()).filter(row -> row.getID() == id)
-            .findFirst().orElse(new Client());
-        if (cliente.getID() > 0) {
-          return cliente;
-        } else {
-          ViewCreator.mostrarError("El código introducido no coincide con el de ningún cliente.");
-        }
-      } else {
-        ViewCreator.mostrarError(
-            "Debe introducir un código valido o NUEVO. Los códigos son enteros mayores de 0.");
-      }
-    }
-  }
-
-  /**
-   * Pide al usuario que elija una opción del menu y devuelve la opción seleccionada en mayúsculas
-   *
-   * @param menu menu donde esta el usuario
-   * @return opción seleccionada en mayusculas
-   */
-  private static String getOptionFromUser(Menu menu) {
-    String userInput;
-    do {
-      ViewCreator.pintarMenu(menu);
-      userInput = ViewCreator.pedirEntradaTexto("Por favor elija una opción del menú:");
-      for (MenuItem opcion : menu.getOptionList()) {
-        if (opcion.getOptionNumber().equalsIgnoreCase(userInput)) {
-          return userInput.toUpperCase();
-        }
-      }
-      ViewCreator.mostrarError("La opción seleccionada no es válida");
-    } while (true);
-
-  }
+  //INVENTARIO
 
   /**
    * Pide al usuario los datos de un nuevo modelo de zapato e intenta añadirlo al sistema
@@ -380,6 +358,125 @@ public class Router {
   }
 
   /**
+   * Muestra al usuario la lista de los modelos en stock y le pide el ID del que desea eliminar. A
+   * continuación intenta eliminarlo de la base de datos.
+   */
+  private static void deleteModel() {
+    String consoleInput;
+    ViewCreator.pintarTabla(DB_CONTROLLER.getStock());
+    consoleInput = ViewCreator.pedirEntradaTexto(
+        "Introduzca el código del modelo que desea eliminar:");
+    if (DB_CONTROLLER.removeShoeModel(consoleInput)) {
+      ViewCreator.mostrarExito(
+          "Los datos del modelo con el código " + consoleInput + " se han eliminado");
+    } else {
+      ViewCreator.mostrarError(
+          "Se ha producido un error al intentar borrar los datos del modelo " + consoleInput);
+    }
+    ViewCreator.waitEnter();
+  }
+
+  /**
+   * Muestra al usuario el inventario. Y le pide el ID del modelo del cual quiere modificar el
+   * número de artículos en stock. A continuación le solicita el nuevo número de artículos y luego
+   * intenta actualizar el inventario en la base de datos.
+   */
+  private static void modifyStock() {
+    String entradaUsuario;
+    boolean esValido = false;
+    //Pintar inventario
+    ShoeModel[] inventario = DB_CONTROLLER.getStock();
+    ViewCreator.pintarTabla(inventario);
+    //Pedir un ID
+    int id = -1;
+    while (!esValido) {
+      entradaUsuario = ViewCreator.pedirEntradaTexto(
+          "Introduzca el ID del modelo que quiere modificar:");
+      if (Utils.isIntString(entradaUsuario)) {
+        id = Integer.parseInt(entradaUsuario);
+        esValido = true;
+      } else {
+        ViewCreator.mostrarError("Debe introducir un ID valido. Los ID son enteros mayores de 0.");
+      }
+    }
+    //Obtener el objeto ShoeModel con ese id, o uno con id -1 si no está
+    int finalID = id; //Cuidado es final de forma efectiva para la exp. Lambda
+    ShoeModel modeloSeleccionado = Arrays.stream(inventario)
+        .filter(modelo -> modelo.getID() == finalID)
+        .findFirst()
+        .orElse(new ShoeModel());
+
+    //Comprobar si el modelo existe
+    if (modeloSeleccionado.getID() > 0) {
+      ViewCreator.pintarTabla(new ShoeModel[]{modeloSeleccionado});
+      esValido = false;
+      ViewCreator.mostraMensaje(
+          "El modelo seleccionado tiene " + modeloSeleccionado.getAvailableUnits() + " en stock.");
+      //Pedir el nuevo número de unidades de ese modelo
+      while (!esValido) {
+        entradaUsuario = ViewCreator.pedirEntradaTexto(
+            "Introduzca el nuevo número de unidades:");
+        if (Utils.isIntString(entradaUsuario)) {
+          modeloSeleccionado.setAvailableUnits(Integer.parseInt(entradaUsuario));
+          esValido = true;
+        } else {
+          ViewCreator.mostrarError("El nuevo número de unidades debe ser 0 o un entero positivo.");
+        }
+      }
+      //Usar el controlador para actualizar la bd
+      modeloSeleccionado = DB_CONTROLLER.updateShoeModel(modeloSeleccionado);
+      //Comprobar si actualizo con éxito
+      if (modeloSeleccionado.getID() > 0) {
+        ViewCreator.mostrarExito("La cantidad de unidades en stock se ha modificado con éxito.");
+      } else {
+        ViewCreator.mostrarError("Ha ocurrido un error al intentar modificar la base de datos");
+      }
+
+      //Si el ID no coincide con ningún modelo de la bd
+    } else {
+      ViewCreator.mostrarError("No hay ningún modelo con ese ID");
+    }
+  }
+
+  //CLIENTES
+
+  /**
+   * Muestra al usuario los clientes que hay en el sistema. Le pide que proporcione el código id de
+   * uno de ellos o si desea crear uno nuevo. Si desea crear uno nuevo devuelve un Client con ID =
+   * -1. Si no devuelve el Client con ese ID.
+   *
+   * @return un Client con ID -1 si se desea crear uno nuevo o el Client con ese ID de la bd
+   */
+  private static Client identificarCliente() {
+    ViewCreator.pintarTabla(DB_CONTROLLER.getClients());
+    Client cliente = new Client();
+
+    String entradaUsuario;
+    while (true) {
+      entradaUsuario = ViewCreator.pedirEntradaTexto(
+          "Por favor introduzca el código del cliente o NUEVO si desea dar de alta a un cliente nuevo");
+      if (entradaUsuario.equalsIgnoreCase("NUEVO")) {
+        return cliente;
+      }
+      if (Utils.isIntString(entradaUsuario)) {
+        int id = Integer.parseInt(entradaUsuario);
+        cliente = Arrays.stream(DB_CONTROLLER.getClients())
+            .filter(row -> row.getID() == id)
+            .findFirst()
+            .orElse(new Client());
+        if (cliente.getID() > 0) {
+          return cliente;
+        } else {
+          ViewCreator.mostrarError("El código introducido no coincide con el de ningún cliente.");
+        }
+      } else {
+        ViewCreator.mostrarError(
+            "Debe introducir un código valido o NUEVO. Los códigos son enteros mayores de 0.");
+      }
+    }
+  }
+
+  /**
    * Pide al usuario los datos de un nuevo cliente e intenta añadirlo al sistema
    */
   private static void addNewClient() {
@@ -409,24 +506,7 @@ public class Router {
     ViewCreator.waitEnter();
   }
 
-  /**
-   * Muestra al usuario la lista de los modelos en stock y le pide el ID del que desea eliminar. A
-   * continuación intenta eliminarlo de la base de datos.
-   */
-  private static void deleteModel() {
-    String consoleInput;
-    ViewCreator.pintarTabla(DB_CONTROLLER.getStock());
-    consoleInput = ViewCreator.pedirEntradaTexto(
-        "Introduzca el código del modelo que desea eliminar:");
-    if (DB_CONTROLLER.removeShoeModel(consoleInput)) {
-      ViewCreator.mostrarExito(
-          "Los datos del modelo con el código " + consoleInput + " se han eliminado");
-    } else {
-      ViewCreator.mostrarError(
-          "Se ha producido un error al intentar borrar los datos del modelo " + consoleInput);
-    }
-    ViewCreator.waitEnter();
-  }
+
 
   /**
    * Muestra al usuario la lista de los clientes en el sistema y le pide el ID del que desea
@@ -445,66 +525,5 @@ public class Router {
           "Se ha producido un error al intentar borrar los datos del cliente " + consoleInput);
     }
     ViewCreator.waitEnter();
-  }
-
-  /**
-   * Muestra al usuario el inventario. Y le pide el ID del modelo del cual quiere modificar el
-   * número de artículos en stock. A continuación le solicita el nuevo número de artículos y luego
-   * intenta actualizar el inventario en la base de datos.
-   */
-  private static void modifyStock() {
-    String entradaUsuario;
-    boolean esValido = false;
-    //Pintar inventario
-    ShoeModel[] inventario = DB_CONTROLLER.getStock();
-    ViewCreator.pintarTabla(inventario);
-    //Pedir un ID
-    int id = -1;
-    while (!esValido) {
-      entradaUsuario = ViewCreator.pedirEntradaTexto(
-          "Introduzca el ID del modelo que quiere modificar:");
-      if (Utils.isIntString(entradaUsuario)) {
-        id = Integer.parseInt(entradaUsuario);
-        esValido = true;
-      } else {
-        ViewCreator.mostrarError("Debe introducir un ID valido. Los ID son enteros mayores de 0.");
-      }
-    }
-    //Obtener el objeto ShoeModel con ese id, o uno con id -1 si no está
-    int finalID = id; //Cuidado hecha final de forma efectiva para la exp. Lambda
-    ShoeModel modeloSeleccionado = Arrays.stream(inventario)
-        .filter(modelo -> modelo.getID() == finalID)
-        .findFirst().orElse(new ShoeModel());
-
-    //Comprobar si el modelo existe
-    if (modeloSeleccionado.getID() > 0) {
-      ViewCreator.pintarTabla(new ShoeModel[]{modeloSeleccionado});
-      esValido = false;
-      ViewCreator.mostraMensaje(
-          "El modelo seleccionado tiene " + modeloSeleccionado.getAvailableUnits() + " en stock.");
-      //Pedir el nuevo número de unidades de ese modelo
-      while (!esValido) {
-        entradaUsuario = ViewCreator.pedirEntradaTexto(
-            "Introduzca el nuevo número de unidades:");
-        if (Utils.isIntString(entradaUsuario)) {
-          modeloSeleccionado.setAvailableUnits(Integer.parseInt(entradaUsuario));
-          esValido = true;
-        } else {
-          ViewCreator.mostrarError("El nuevo número de unidades debe ser 0 o un entero positivo.");
-        }
-      }
-      //Usar el controlador para actualizar la bd
-      modeloSeleccionado = DB_CONTROLLER.updateShoeModel(modeloSeleccionado);
-      //Comprobar si actualizo con exito
-      if (modeloSeleccionado.getID() > 0) {
-        ViewCreator.mostrarExito("La cantidad de unidades en stock se ha modificado con éxito.");
-      } else {
-        ViewCreator.mostrarError("Ha ocurrido un error al intentar modificar la base de datos");
-      }
-
-      //Si el ID no coincide con ningun modelo de la bd
-    } else {
-      ViewCreator.mostrarError("No hay ningún modelo con ese ID");
-    }
   }
 }
